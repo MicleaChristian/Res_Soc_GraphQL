@@ -1,0 +1,7 @@
+{
+  "name": "Raven",
+  "version": "1.0.0",
+  "description": "Social network in typescript using graphql",
+  "main": "index.js",
+  "license": "MIT"
+}
