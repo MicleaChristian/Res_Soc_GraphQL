@@ -2,12 +2,12 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hashPassword } from "../../modules/auth.js";
 import { MutationResolvers } from "../../types.js";
  
-export const createUser: MutationResolvers['createUser'] = async (_, {username, password}, {dataSources}, __) => {
+export const createUser: MutationResolvers['createUser'] = async (_, {email, password}, {dataSources}, __) => {
   try {
     const createdUser = await dataSources.db.user.create({
       data: {
-        username,
-        password: await hashPassword(password)
+        email,
+        password: await hashPassword(password),
       }
     })
     return {
@@ -16,7 +16,7 @@ export const createUser: MutationResolvers['createUser'] = async (_, {username, 
       success: true,
       user: {
         id: createdUser.id,
-        username: createdUser.username
+        email: createdUser.email
       }
     }
   } catch(e) {

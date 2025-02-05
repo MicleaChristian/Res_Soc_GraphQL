@@ -1,5 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { UserModel, PostModel, CommentModel, ImageModel } from './models';
+import { PostModel, CommentModel, ImageModel } from './models';
 import { DataSourceContext } from './context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -53,7 +53,7 @@ export type CreateUserResponse = {
   code: Scalars['Int']['output'];
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
-  user?: Maybe<User>;
+  user?: Maybe<UserClientObject>;
 };
 
 export type Image = {
@@ -70,30 +70,20 @@ export type Image = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createComment?: Maybe<CreateCommentResponse>;
-  createPost?: Maybe<CreatePostResponse>;
   createUser?: Maybe<CreateUserResponse>;
-};
-
-
-export type MutationCreateCommentArgs = {
-  authorId: Scalars['ID']['input'];
-  content: Scalars['String']['input'];
-  postId: Scalars['ID']['input'];
-  title: Scalars['String']['input'];
-};
-
-
-export type MutationCreatePostArgs = {
-  authorId: Scalars['ID']['input'];
-  content: Scalars['String']['input'];
-  title: Scalars['String']['input'];
+  signIn?: Maybe<SignInUserResponse>;
 };
 
 
 export type MutationCreateUserArgs = {
+  email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
+};
+
+
+export type MutationSignInArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Post = {
@@ -110,8 +100,42 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
-  getComments: Array<Maybe<Comment>>;
-  getPosts: Array<Maybe<Post>>;
+  add?: Maybe<Scalars['Float']['output']>;
+  divide?: Maybe<Scalars['Float']['output']>;
+  multiply?: Maybe<Scalars['Float']['output']>;
+  substract?: Maybe<Scalars['Float']['output']>;
+};
+
+
+export type QueryAddArgs = {
+  number1: Scalars['Float']['input'];
+  number2: Scalars['Float']['input'];
+};
+
+
+export type QueryDivideArgs = {
+  number1: Scalars['Float']['input'];
+  number2: Scalars['Float']['input'];
+};
+
+
+export type QueryMultiplyArgs = {
+  number1: Scalars['Float']['input'];
+  number2: Scalars['Float']['input'];
+};
+
+
+export type QuerySubstractArgs = {
+  number1: Scalars['Float']['input'];
+  number2: Scalars['Float']['input'];
+};
+
+export type SignInUserResponse = {
+  __typename?: 'SignInUserResponse';
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+  token?: Maybe<Scalars['String']['output']>;
 };
 
 export type User = {
@@ -120,6 +144,15 @@ export type User = {
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   password: Scalars['String']['output'];
+  photo?: Maybe<Array<Maybe<Image>>>;
+  post?: Maybe<Array<Maybe<Post>>>;
+};
+
+export type UserClientObject = {
+  __typename?: 'UserClientObject';
+  comment?: Maybe<Array<Maybe<Comment>>>;
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   photo?: Maybe<Array<Maybe<Image>>>;
   post?: Maybe<Array<Maybe<Post>>>;
 };
@@ -197,34 +230,36 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Comment: ResolverTypeWrapper<CommentModel>;
-  CreateCommentResponse: ResolverTypeWrapper<Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
-  CreatePostResponse: ResolverTypeWrapper<Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
-  CreateUserResponse: ResolverTypeWrapper<Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversTypes['User']> }>;
+  CreateUserResponse: ResolverTypeWrapper<Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversTypes['UserClientObject']> }>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Image: ResolverTypeWrapper<ImageModel>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Post: ResolverTypeWrapper<PostModel>;
   Query: ResolverTypeWrapper<{}>;
+  SignInUserResponse: ResolverTypeWrapper<SignInUserResponse>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  User: ResolverTypeWrapper<UserModel>;
+  User: ResolverTypeWrapper<Omit<User, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
+  UserClientObject: ResolverTypeWrapper<Omit<UserClientObject, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Comment: CommentModel;
-  CreateCommentResponse: Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
-  CreatePostResponse: Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
-  CreateUserResponse: Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversParentTypes['User']> };
+  CreateUserResponse: Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversParentTypes['UserClientObject']> };
+  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Image: ImageModel;
   Int: Scalars['Int']['output'];
   Mutation: {};
   Post: PostModel;
   Query: {};
+  SignInUserResponse: SignInUserResponse;
   String: Scalars['String']['output'];
-  User: UserModel;
+  User: Omit<User, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversParentTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversParentTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
+  UserClientObject: Omit<UserClientObject, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversParentTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversParentTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
 };
 
 export type CommentResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
@@ -260,7 +295,7 @@ export type CreateUserResponseResolvers<ContextType = DataSourceContext, ParentT
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['UserClientObject']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -277,9 +312,8 @@ export type ImageResolvers<ContextType = DataSourceContext, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'authorId' | 'content' | 'postId' | 'title'>>;
-  createPost?: Resolver<Maybe<ResolversTypes['CreatePostResponse']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'authorId' | 'content' | 'title'>>;
-  createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'password' | 'username'>>;
+  createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;
+  signIn?: Resolver<Maybe<ResolversTypes['SignInUserResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
 };
 
 export type PostResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -295,8 +329,18 @@ export type PostResolvers<ContextType = DataSourceContext, ParentType extends Re
 };
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType>;
-  getPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
+  add?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryAddArgs, 'number1' | 'number2'>>;
+  divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
+  multiply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
+  substract?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QuerySubstractArgs, 'number1' | 'number2'>>;
+};
+
+export type SignInUserResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['SignInUserResponse'] = ResolversParentTypes['SignInUserResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -304,6 +348,15 @@ export type UserResolvers<ContextType = DataSourceContext, ParentType extends Re
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  photo?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
+  post?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserClientObjectResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['UserClientObject'] = ResolversParentTypes['UserClientObject']> = {
+  comment?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   photo?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
   post?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -318,6 +371,8 @@ export type Resolvers<ContextType = DataSourceContext> = {
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SignInUserResponse?: SignInUserResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  UserClientObject?: UserClientObjectResolvers<ContextType>;
 };
 
