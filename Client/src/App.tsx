@@ -2,6 +2,7 @@ import React from "react";
 import Feeds from "./components/Feeds";
 import RightPanel from "./components/RightPanel";
 import Sidebar from "./components/SideBar";
+import { Link } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (

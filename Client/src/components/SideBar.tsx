@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
+  const bool =false
   return (
     <aside className="w-64 bg-white p-6 shadow-md flex flex-col justify-between">
       <div>
+        {bool ?
         <div className="flex shadow-md rounded-2xl p-4 items-center gap-4 mb-8">
           <div className="w-12 h-12 rounded-full bg-gray-300">
             <img
@@ -16,7 +19,20 @@ const Sidebar: React.FC = () => {
             <h3 className="text-lg text-black font-semibold">Prince</h3>
             <p className="text-gray-500">@prince</p>
           </div>
-        </div>
+        </div> :         <Link to="/login" className="flex shadow-md rounded-2xl p-4 items-center gap-4 mb-8">
+          <div className="w-12 h-12 rounded-full bg-gray-300">
+            <img
+              src="https://placehold.co/600x400"
+              alt="Avatar"
+              className="w-12 h-12 rounded-full"
+            />
+          </div>
+          <div>
+            <h3 className="text-lg text-black font-semibold">Log in</h3>
+          </div>
+          
+        </Link>
+}
         <nav className="space-y-4 text-black">
           <a href="#newfeed" className="block !text-black font-medium">
             News Feed
