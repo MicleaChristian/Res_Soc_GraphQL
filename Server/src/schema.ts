@@ -1,12 +1,37 @@
 import gql from "graphql-tag";
  
 export const typeDefs = gql`
+  type Query {
+      getPosts: [Post]!
+      getComments: [Comment]!
+    }
+
+  type Mutation{
+    createUser(username: String!, password: String!): CreateUserResponse
+    createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
+    createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
+  }
   
+
   type CreateUserResponse {
     code: Int!
     success: Boolean!
     message: String!
     user: User
+  }
+
+  type CreatePostResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    post: Post
+  }
+
+  type CreateCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    comment: Comment
   }
  
   type User {
