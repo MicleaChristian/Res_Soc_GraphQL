@@ -1,43 +1,45 @@
 import gql from "graphql-tag";
  
 export const typeDefs = gql`
-  type Query {
-      getPosts: [Post]!
-      getComments: [Comment]!
-    }
 
-  type Mutation{
-    createUser(username: String!, password: String!): CreateUserResponse
-    createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
-    createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
+  type Query {
+    add(number1: Float!, number2: Float!): Float
+    substract(number1: Float!, number2: Float!): Float
+    multiply(number1: Float!, number2: Float!): Float
+    divide(number1: Float!, number2: Float!): Float
+  }
+
+  type Mutation {
+    createUser(email: String!, password: String!): CreateUserResponse
+    signIn(email: String!, password: String!): SignInUserResponse
+  }
+
+  type SignInUserResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    token: String
   }
   
-
   type CreateUserResponse {
     code: Int!
     success: Boolean!
     message: String!
-    user: User
-  }
-
-  type CreatePostResponse {
-    code: Int!
-    success: Boolean!
-    message: String!
-    post: Post
-  }
-
-  type CreateCommentResponse {
-    code: Int!
-    success: Boolean!
-    message: String!
-    comment: Comment
+    user: UserClientObject
   }
  
   type User {
     id: ID!
     email: String!
     password: String!
+    photo: [Image]
+    post:  [Post]
+    comment:  [Comment]
+  }
+
+  type UserClientObject {
+    id: ID!
+    email: String!
     photo: [Image]
     post:  [Post]
     comment:  [Comment]
