@@ -1,6 +1,33 @@
-import React from "react";
+import { gql, useQuery } from "@apollo/client";
+
+const GET_POSTS = gql`
+  query GetPosts {
+    posts {
+      id
+    }
+  }
+`;
 
 const Feeds: React.FC = () => {
+  const { data, error, loading } = useQuery(GET_POSTS, {
+    variables: {},
+  });
+  console.log(data, error, loading);
+
+  if (loading)
+    return (
+      <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
+        Loading...
+      </div>
+    );
+
+  if (error || !data?.character)
+    return (
+      <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
+        No posts found
+      </div>
+    );
+
   return (
     <section>
       <div className="mb-8">

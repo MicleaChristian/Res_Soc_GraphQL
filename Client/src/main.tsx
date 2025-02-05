@@ -7,6 +7,7 @@ import LoginPage from './pages/auth/login';
 import ResetPassPage from './pages/auth/resetpass';
 import RegisterPage from './pages/auth/register';
 import Posts from './pages/post.tsx';
+import Profil from './pages/auth/profil.tsx';
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql', // Replace with your GraphQL endpoint
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/reset" element={<ResetPassPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/profil" element={<Profil />} />
                     <Route path="/:id" element={<Posts />} />
                 </Routes>
             </BrowserRouter>
