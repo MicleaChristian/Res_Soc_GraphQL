@@ -1,6 +1,6 @@
+import { useQuery } from "@apollo/client"
 import { useParams } from "react-router"
 import { graphql } from "./gql"
-import { useQuery } from "@apollo/client"
 
 const getCharacterById = graphql(`
 query GetCharacter($id: ID!) {
