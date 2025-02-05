@@ -4,6 +4,5 @@ import {createUser} from './mutations/users/createUser.js'
 
 
 export const resolvers: Resolvers = {
- 
   
 }
