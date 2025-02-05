@@ -13,6 +13,21 @@ export const typeDefs = gql`
     createUser(email: String!, password: String!): CreateUserResponse
     signIn(email: String!, password: String!): SignInUserResponse
     createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
+    createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
+  }
+
+  type CreatePostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    post: Post
+  }
+
+  type CreateCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    comment: Comment
   }
 
   type CreatePostResponse {

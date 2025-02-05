@@ -64,6 +64,40 @@ export const resolvers: Resolvers = {
         }
       }
     },
+    createComment: async (_, {title, content, authorId, postId}, context) => {
+      try {
+        const createdComment = await context.dataSources.db.comment.create({
+          data: {
+            title,
+            content,
+            authorId,
+            postId
+          }
+        })
+
+        return {
+          code: 201,
+          message: `Comment created`,
+          success: true,
+          comment: {
+            id: createdComment.id,
+            title: createdComment.title,
+            content: createdComment.content,
+            published: true,
+            publishedAt: createdComment.publishedAt,
+            authorId: createdComment.authorId,
+            postId: createdComment.postId
+          }
+        }
+      } catch(error) {
+        return {
+          code: 400,
+          message: 'Comment not published',
+          success: false,
+          comment: null
+        }
+      }
+    },
     createUser,
     signIn,
   },
