@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/MicleaChristian/Res_Soc_GraphQL.git",
   "author": "MICLEA Christian <66925033+MicleaChristian@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-router-dom": "^7.1.5"
+  }
 }

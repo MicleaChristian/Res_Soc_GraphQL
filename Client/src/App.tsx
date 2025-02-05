@@ -1,55 +1,24 @@
-import { useQuery } from '@apollo/client'
-import { Link } from 'react-router'
-import './App.css'
-import { graphql } from './gql'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const getCharacters = graphql(`
-query GetCharacters($page: Int) {
-  characters(page: $page) {
-    info {
-      next
-    }
-    results {
-      id
-      name
-      image
-    }
-  }
-}  
-`)
+const App: React.FC = () => {
+    return (
+        <div>
+            <h1>Welcome to the Application</h1>
+            <p>Please navigate to one of the following options:</p>
+            <ul>
+                <li>
+                    <Link to="/login">Login</Link>
+                </li>
+                <li>
+                    <Link to="/login/register">Register</Link>
+                </li>
+                <li>
+                    <Link to="/login/reset">Reset Password</Link>
+                </li>
+            </ul>
+        </div>
+    );
+};
 
-function App() {
-  const {data, error, loading, refetch} = useQuery(getCharacters)
-
-
-  console.log(data)
-  console.log(error);
-
-  if(loading) return <div>loading</div>
-
-  if (error || !data) return <div>error</div>
-
-  const onLoadMore = () => {
-    refetch({page: data.characters?.info?.next})
-  }
-
-  return (
-    <>
-      {data.characters?.info?.next && <button onClick={onLoadMore}>load more</button>}
-      <ul>
-        {(data.characters?.results ?? [])
-          .filter(character => character !== null)
-          .map(character => <li key={character.id}>
-            <Link to={`/${character.id}`}>
-              <div>
-                <img src={character.image ?? ''} alt={character.name ?? ''} />
-                <p>{character.name}</p>
-              </div>
-            </Link>
-          </li>)}
-      </ul>
-    </>
-  )
-}
-
-export default App
+export default App;
