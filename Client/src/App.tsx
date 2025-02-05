@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
+import { Link } from 'react-router'
 import './App.css'
 import { graphql } from './gql'
-import { Link } from 'react-router'
 
 const getCharacters = graphql(`
 query GetCharacters($page: Int) {
@@ -20,6 +20,10 @@ query GetCharacters($page: Int) {
 
 function App() {
   const {data, error, loading, refetch} = useQuery(getCharacters)
+
+
+  console.log(data)
+  console.log(error);
 
   if(loading) return <div>loading</div>
 
