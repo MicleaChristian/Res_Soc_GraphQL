@@ -2,38 +2,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
-  const bool =false
+  const bool = false;
   return (
     <aside className="w-64 bg-white p-6 shadow-md flex flex-col justify-between">
       <div>
-        {bool ?
-        <div className="flex shadow-md rounded-2xl p-4 items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gray-300">
-            <img
-              src="https://placehold.co/600x400"
-              alt="Avatar"
-              className="w-12 h-12 rounded-full"
-            />
+        {bool ? (
+          <div className="flex shadow-md w-full rounded-2xl p-4 items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-full bg-gray-300">
+              <img
+                src="https://placehold.co/600x400"
+                alt="Avatar"
+                className="w-12 h-12 rounded-full"
+              />
+            </div>
+            <div>
+              <h3 className="text-lg text-black font-semibold">Prince</h3>
+              <p className="text-gray-500">@prince</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-lg text-black font-semibold">Prince</h3>
-            <p className="text-gray-500">@prince</p>
+        ) : (
+          <div className="flex gap-4">
+            <Link
+              to="/login"
+              className=" shadow-md rounded-2xl p-4 items-center gap-4 mb-8"
+            >
+              <div className="w-12 h-12 rounded-full bg-gray-300">
+                <img
+                  src="https://placehold.co/600x400"
+                  alt="Avatar"
+                  className="w-12 h-12 rounded-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-lg text-black font-semibold">Log in</h3>
+              </div>
+            </Link>
           </div>
-        </div> :         <Link to="/login" className="flex shadow-md rounded-2xl p-4 items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gray-300">
-            <img
-              src="https://placehold.co/600x400"
-              alt="Avatar"
-              className="w-12 h-12 rounded-full"
-            />
-          </div>
-          <div>
-            <h3 className="text-lg text-black font-semibold">Log in</h3>
-          </div>
-          
-        </Link>
-}
-        <nav className="space-y-4 text-black">
+        )}
+        <nav className="space-y-4 text-black flex flex-col">
           <a href="#newfeed" className="block !text-black font-medium">
             News Feed
           </a>
@@ -62,7 +68,9 @@ const Sidebar: React.FC = () => {
             className="w-full rounded-full"
           />
         </div>
-        <p className="text-center w-full p-0 text-gray-700">Télécharger l'app</p>
+        <p className="text-center w-full p-0 text-gray-700">
+          Télécharger l'app
+        </p>
       </div>
     </aside>
   );
