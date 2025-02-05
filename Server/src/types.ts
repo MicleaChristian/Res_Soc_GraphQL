@@ -32,22 +32,6 @@ export type Comment = {
   title: Scalars['String']['output'];
 };
 
-export type CreateCommentResponse = {
-  __typename?: 'CreateCommentResponse';
-  code: Scalars['Int']['output'];
-  comment?: Maybe<Comment>;
-  message: Scalars['String']['output'];
-  success: Scalars['Boolean']['output'];
-};
-
-export type CreatePostResponse = {
-  __typename?: 'CreatePostResponse';
-  code: Scalars['Int']['output'];
-  message: Scalars['String']['output'];
-  post?: Maybe<Post>;
-  success: Scalars['Boolean']['output'];
-};
-
 export type CreateUserResponse = {
   __typename?: 'CreateUserResponse';
   code: Scalars['Int']['output'];
@@ -102,6 +86,7 @@ export type Query = {
   __typename?: 'Query';
   add?: Maybe<Scalars['Float']['output']>;
   divide?: Maybe<Scalars['Float']['output']>;
+  getPosts?: Maybe<Array<Maybe<Post>>>;
   multiply?: Maybe<Scalars['Float']['output']>;
   substract?: Maybe<Scalars['Float']['output']>;
 };
@@ -275,22 +260,6 @@ export type CommentResolvers<ContextType = DataSourceContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCommentResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateCommentResponse'] = ResolversParentTypes['CreateCommentResponse']> = {
-  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type CreatePostResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreatePostResponse'] = ResolversParentTypes['CreatePostResponse']> = {
-  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type CreateUserResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateUserResponse'] = ResolversParentTypes['CreateUserResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -331,6 +300,7 @@ export type PostResolvers<ContextType = DataSourceContext, ParentType extends Re
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   add?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryAddArgs, 'number1' | 'number2'>>;
   divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
+  getPosts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
   multiply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
   substract?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QuerySubstractArgs, 'number1' | 'number2'>>;
 };
@@ -364,8 +334,6 @@ export type UserClientObjectResolvers<ContextType = DataSourceContext, ParentTyp
 
 export type Resolvers<ContextType = DataSourceContext> = {
   Comment?: CommentResolvers<ContextType>;
-  CreateCommentResponse?: CreateCommentResponseResolvers<ContextType>;
-  CreatePostResponse?: CreatePostResponseResolvers<ContextType>;
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

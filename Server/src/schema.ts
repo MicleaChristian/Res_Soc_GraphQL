@@ -7,6 +7,7 @@ export const typeDefs = gql`
     substract(number1: Float!, number2: Float!): Float
     multiply(number1: Float!, number2: Float!): Float
     divide(number1: Float!, number2: Float!): Float
+    getPosts: [Post!]!
   }
 
   type Mutation {

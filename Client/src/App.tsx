@@ -1,10 +1,16 @@
 import React from "react";
-import Home from "./pages/home";
+import Feeds from "@components/Feeds";
+import RightPanel from "@components/RightPanel";
+import Sidebar from "@components/SideBar";
 
 const App: React.FC = () => {
   return (
     <div className="flex bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen min-w-screen">
-      <Home />
+      <Sidebar />
+      <main className="flex-1 p-6">
+        <Feeds />
+      </main>
+      <RightPanel />
     </div>
   );
 };
