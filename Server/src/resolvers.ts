@@ -32,6 +32,38 @@ export const resolvers: Resolvers = {
     },
   },
   Mutation: {
+    createPost: async (_, {title, content, authorId}, context) => {
+      try {
+        const createdPost = await context.dataSources.db.post.create({
+          data: {
+            title,
+            content,
+            authorId
+          }
+        })
+
+        return {
+          code: 201,
+          message: `Post created`,
+          success: true,
+          post: {
+            id: createdPost.id,
+            title: createdPost.title,
+            content: createdPost.content,
+            published: true,
+            publishedAt: createdPost.publishedAt,
+            authorId: createdPost.authorId
+          }
+        }
+      } catch(error) {
+        return {
+          code: 400,
+          message: 'Something bad happened',
+          success: false,
+          post: null
+        }
+      }
+    },
     createUser,
     signIn,
   },
