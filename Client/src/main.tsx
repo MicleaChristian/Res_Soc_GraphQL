@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { BrowserRouter, Route, Routes } from "react-router";
 import App from './App.tsx'
-import './index.css';
 import LoginPage from './pages/auth/login';
 import ResetPassPage from './pages/auth/resetpass';
 import RegisterPage from './pages/auth/register';

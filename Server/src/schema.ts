@@ -14,6 +14,13 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): SignInUserResponse
   }
 
+  type getPostsResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    post: [Post]
+  }
+
   type SignInUserResponse {
     code: Int!
     success: Boolean!
