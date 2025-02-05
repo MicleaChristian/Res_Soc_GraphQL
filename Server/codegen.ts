@@ -8,10 +8,10 @@ const config: CodegenConfig = {
       config: {
         contextType: './context#DataSourceContext',
         mappers: {
-          Film: './models#FilmModel',
-          People: './models#PeopleModel',
-          Track: './models#TrackModel',
-          Author: './models#AuthorModel',
+          User: './models#UserModel',
+          Post: './models#PostModel',
+          Comment: './models#CommentModel',
+          Image: './models#ImageModel',
         }
       }
     }
