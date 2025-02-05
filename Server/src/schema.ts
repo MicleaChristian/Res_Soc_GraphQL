@@ -1,23 +1,7 @@
 import gql from "graphql-tag";
  
 export const typeDefs = gql`
-  type Query {
-    getPeople: [People]!
-    getFilms: [Film]!
-  }
-  type Mutation{
-    incrementNumberOfLikes(id: ID!) : incrementNumberOfLikesResponse!
-    createUser(username: String!, password: String!): CreateUserResponse
-    
-  }
-
-  type incrementNumberOfLikesResponse {
-  code: Int!
-  success: Boolean!
-  message: String!
-  track: Track
-  }
-
+  
   type CreateUserResponse {
     code: Int!
     success: Boolean!
@@ -27,34 +11,45 @@ export const typeDefs = gql`
  
   type User {
     id: ID!
-    username: String!
-  }
- 
-  type Film {
-    id: ID
-    title: String
-    people: [People]
-  }
-  
-  type People {
-    id: ID
-    name : String
-    eyeColor: String
-    films: [Film]
+    email: String!
+    password: String!
+    photo: [Image]
+    post:  [Post]
+    comment:  [Comment]
   }
 
-  type Track {
+  type Post {
     id: ID!
     title: String!
-    author: Author!
-    thumbnail: String
-    numberOfViews: Int
+    content: String!
+    published: Boolean!
+    authorId: String!
+    author: User!
+    photo: [Image]
+    comments: [Comment]
   }
 
-  type Author {
+  type Comment {
     id: ID!
-    name: String!
-    photo: String!
+    title: String!
+    content: String!
+    published: Boolean!
+    authorId: String!
+    author: User!
+    postId: String!
+    post: Post!
+    photo: [Image]
+  }
+  
+  type Image {
+    id: ID!
+    url: String!
+    postId: String
+    post: Post
+    userId: String
+    user: User
+    commentId: String
+    comment: Comment
   }
   
 `;
