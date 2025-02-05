@@ -1,13 +1,12 @@
 import gql from "graphql-tag";
- 
-export const typeDefs = gql`
 
+export const typeDefs = gql`
   type Query {
     add(number1: Float!, number2: Float!): Float
     substract(number1: Float!, number2: Float!): Float
     multiply(number1: Float!, number2: Float!): Float
     divide(number1: Float!, number2: Float!): Float
-    getPosts: [Post!]!
+    getPosts: [Post]
   }
 
   type Mutation {
@@ -21,41 +20,41 @@ export const typeDefs = gql`
     message: String!
     token: String
   }
-  
+
   type CreateUserResponse {
     code: Int!
     success: Boolean!
     message: String!
     user: UserClientObject
   }
- 
+
   type User {
     id: ID!
     email: String!
     password: String!
     photo: [Image]
-    post:  [Post]
-    comment:  [Comment]
+    post: [Post]
+    comment: [Comment]
   }
 
   type UserClientObject {
     id: ID!
     email: String!
     photo: [Image]
-    post:  [Post]
-    comment:  [Comment]
+    post: [Post]
+    comment: [Comment]
   }
 
-  type Post {
-    id: ID!
-    title: String!
-    content: String!
-    published: Boolean!
-    authorId: String!
-    author: User!
-    photo: [Image]
-    comments: [Comment]
-  }
+type Post {
+  id: ID!
+  authorId: ID!
+  title: String!
+  content: String!
+  published: Boolean!
+  publishedAt: String!
+  photo: String
+  comments: [Comment]
+}
 
   type Comment {
     id: ID!
@@ -68,7 +67,7 @@ export const typeDefs = gql`
     post: Post!
     photo: [Image]
   }
-  
+
   type Image {
     id: ID!
     url: String!
@@ -79,6 +78,4 @@ export const typeDefs = gql`
     commentId: String
     comment: Comment
   }
-  
 `;
-

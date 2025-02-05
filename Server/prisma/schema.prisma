@@ -11,50 +11,47 @@ datasource db {
 }
 
 model User {
-  id String @id @unique @default(uuid())
-  email String @unique
+  id       String    @id @unique @default(uuid())
+  email    String    @unique
   password String
   post     Post[]
   comment  Comment[]
-  photo     Image[]
+  photo    Image[]
 }
 
 model Post {
-  id        String     @id @unique @default(uuid())
-  title     String
-  content   String
-  published Boolean @default(false)
-  author    User   @relation(fields: [authorId], references: [id])
-  authorId  String
-  photo     Image[]
-  comments  Comment[]
-  publishedAt   DateTime @default(now())
+  id          String    @id @unique @default(uuid())
+  title       String
+  content     String
+  published   Boolean   @default(false)
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  photo       Image[]
+  comments    Comment[]
+  publishedAt DateTime  @default(now())
 }
 
 model Comment {
-  id        String     @id @unique @default(uuid())
-  title     String
-  content   String
-  published Boolean @default(false)
-  author    User   @relation(fields: [authorId], references: [id])
-  authorId  String
-  postId    String
-  post      Post   @relation(fields: [postId], references: [id])
-  photo     Image[]
-  publishedAt   DateTime @default(now())
+  id          String   @id @unique @default(uuid())
+  title       String
+  content     String
+  published   Boolean  @default(false)
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  postId      String
+  post        Post     @relation(fields: [postId], references: [id])
+  photo       Image[]
+  publishedAt DateTime @default(now())
 }
 
 model Image {
-  id         String  @id @unique @default(uuid())
-  url        String
-  commentId  String?
-  comment    Comment?   @relation(fields: [commentId], references: [id])
-  postId     String?
-  post       Post?    @relation(fields: [postId], references: [id])
-  userId     String?
-  user       User?    @relation(fields: [userId], references: [id])
-  publishedAt   DateTime @default(now())
+  id          String   @id @unique @default(uuid())
+  url         String
+  commentId   String?
+  comment     Comment? @relation(fields: [commentId], references: [id])
+  postId      String?
+  post        Post?    @relation(fields: [postId], references: [id])
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  publishedAt DateTime @default(now())
 }
-
-
-

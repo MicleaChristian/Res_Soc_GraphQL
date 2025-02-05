@@ -72,13 +72,13 @@ export type MutationSignInArgs = {
 
 export type Post = {
   __typename?: 'Post';
-  author: User;
-  authorId: Scalars['String']['output'];
+  authorId: Scalars['ID']['output'];
   comments?: Maybe<Array<Maybe<Comment>>>;
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  photo?: Maybe<Array<Maybe<Image>>>;
+  photo?: Maybe<Scalars['String']['output']>;
   published: Scalars['Boolean']['output'];
+  publishedAt: Scalars['String']['output'];
   title: Scalars['String']['output'];
 };
 
@@ -286,13 +286,13 @@ export type MutationResolvers<ContextType = DataSourceContext, ParentType extend
 };
 
 export type PostResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
-  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  authorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  authorId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  photo?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  publishedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

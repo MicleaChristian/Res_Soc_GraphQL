@@ -4,9 +4,7 @@ export type PostModel = {
   content: string;
   published: boolean;
   authorId: string;
-  photo: ImageModel[];
-  comments: CommentModel[];
-  publishedAt: Date; 
+  publishedAt: Date;
 };
 
 export type CommentModel = {
@@ -16,9 +14,7 @@ export type CommentModel = {
   published: boolean;
   authorId: string;
   postId: string;
-  post: PostModel;
-  photo: ImageModel[];
-  publishedAt:   Date;
+  publishedAt: Date;
 };
 
 export type ImageModel = {
