@@ -1,15 +1,16 @@
 import { GraphQLError,GraphQLScalarType, Kind } from "graphql";
 import { Resolvers } from "./types.js";
 import {createUser} from './mutations/users/createUser.js'
+import { signIn } from "./mutations/signIn.js";
 
 
 export const resolvers: Resolvers = {
-  Query: {
-    getPosts: (_, __, {dataSources}) => {
-      return dataSources.RavenAPIS.getPosts();
-    }
+  Query:{
+    
   },
   Mutation:{
     createUser,
+    signIn
   }
+  
 }

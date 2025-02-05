@@ -4,14 +4,14 @@ import * as bcrypt from "bcrypt";
  
 export const createJWT = (user: User) => {
   const token = jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.id, email: user.email },
     process.env.JWT_SECRET as string
   );
   return token;
 };
 
  
-export type AuthenticatedUser = Pick<User, 'id' | 'username'>
+export type AuthenticatedUser = Pick<User, 'id' | 'email'>
  
 export const getUser = (token: string): AuthenticatedUser | null => {
   try {
