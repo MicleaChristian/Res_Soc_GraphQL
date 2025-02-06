@@ -12,6 +12,9 @@ import { Resolvers } from "./types.js";
 import {comments} from "./queries/posts/subQuerries/postComment.js";
 import {post} from "./queries/comments/subQueries/commentPost.js";
 import {post as reactionPost} from "./queries/reactions/subQueries/reactionPost.js";
+import {createReactionForComment} from "./mutations/reactions/createReactionForComment.js";
+import {createImageForPost} from "./mutations/images/imagePosts/createImageForPost.js";
+
 
 
 export const resolvers: Resolvers = {
@@ -38,7 +41,8 @@ export const resolvers: Resolvers = {
     createComment,
     createUser,
     signIn,
-    createReactionForPost
-   
+    createReactionForPost,
+    createReactionForComment,
+    createImageForPost
   },
 };

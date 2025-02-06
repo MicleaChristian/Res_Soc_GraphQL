@@ -21,6 +21,29 @@ export const typeDefs = gql`
     createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
     createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
+    createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
+    createImageForPost(url: String!, postId: ID!) : CreateImageForPostResponse
+  }
+
+  type CreateImageForPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    image: Image
+  }
+  
+  type CreateReactionForCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: ReactionForCommentClientResponse
+  }
+  
+  type ReactionForCommentClientResponse {
+    id: ID!
+    reactionName: ReactionPostStateEnum!
+    userId: String!
+    commentId: String!
   }
 
   type CreateReactionForPostResponse {
