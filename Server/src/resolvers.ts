@@ -16,7 +16,7 @@ import {createReactionForComment} from "./mutations/reactions/createReactionForC
 import {createImageForPost} from "./mutations/images/imagePosts/createImageForPost.js";
 import {createImageForComment} from "./mutations/images/imageComments/createImageForComment.js";
 import {getUserReactionByPost} from "./queries/reactions/getUserReactionByPost.js"
-import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserReactionByComment.js"
+import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserReactionForAllCommentsInAPost.js"
 
 
 export const resolvers: Resolvers = {
