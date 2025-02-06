@@ -2,6 +2,9 @@ import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
 import { Resolvers } from "./types.js";
+import { GraphQLError } from "graphql";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+
 
 export const resolvers: Resolvers = {
   Post: {
@@ -24,11 +27,27 @@ export const resolvers: Resolvers = {
   },
   Query: {
     // promise getPosts find many post
-    getPosts: async (_, __, { dataSources }: DataSourceContext) => {
-      const logzz = dataSources.db.post.findMany();
+    getUsers: async (_, __, {dataSources}) => {
+      const logzz = await dataSources.db.user.findMany();
+      
+      return {
+        code: 201,
+        message: 'All users successfuly returned',
+        success: true,
+        users: logzz
+      }
+        
+    },
+    getPosts: async (_, __, { dataSources }) => {
+      const logzz = await dataSources.db.post.findMany();
       console.log(logzz);
 
-      return logzz;
+      return {
+        code: 201,
+        message: 'All users successfuly returned',
+        success: true,
+        post: logzz
+      }
     },
   },
   Mutation: {
@@ -100,5 +119,6 @@ export const resolvers: Resolvers = {
     },
     createUser,
     signIn,
+   
   },
 };

@@ -14,9 +14,10 @@ model User {
   id       String    @id @unique @default(uuid())
   email    String    @unique
   password String
-  post     Post[]
-  comment  Comment[]
-  photo    Image[]
+  post     Post[] @relation("userPostRelation")
+  comment  Comment[] @relation("userCommentRelation")
+  photo    Image[] @relation("userPhotoRelation")
+  reaction  Reaction[] @relation("userReactionRelation")
 }
 
 model Post {
@@ -24,11 +25,12 @@ model Post {
   title       String
   content     String
   published   Boolean   @default(false)
-  author      User      @relation(fields: [authorId], references: [id])
+  author      User      @relation("userPostRelation",fields: [authorId], references: [id])
   authorId    String
-  photo       Image[]
-  comments    Comment[]
+  photo       Image[] @relation("postImageRelation")
+  comments    Comment[] @relation("postCommentRelation")
   publishedAt DateTime  @default(now())
+  reaction  Reaction[]  @relation("postReactionRelation")
 }
 
 model Comment {
@@ -36,22 +38,35 @@ model Comment {
   title       String
   content     String
   published   Boolean  @default(false)
-  author      User     @relation(fields: [authorId], references: [id])
+  author      User     @relation("userCommentRelation",fields: [authorId], references: [id])
   authorId    String
   postId      String
-  post        Post     @relation(fields: [postId], references: [id])
-  photo       Image[]
+  post        Post     @relation("postCommentRelation",fields: [postId], references: [id])
+  photo       Image[]   @relation("commentImageRelation")
   publishedAt DateTime @default(now())
+  reaction  Reaction[]  @relation("commentReactionRelation")
 }
 
 model Image {
   id          String   @id @unique @default(uuid())
   url         String
   commentId   String?
-  comment     Comment? @relation(fields: [commentId], references: [id])
+  comment     Comment? @relation("commentImageRelation",fields: [commentId], references: [id])
   postId      String?
-  post        Post?    @relation(fields: [postId], references: [id])
+  post        Post?    @relation("postImageRelation",fields: [postId], references: [id])
   userId      String?
-  user        User?    @relation(fields: [userId], references: [id])
+  user        User?    @relation("userPhotoRelation",fields: [userId], references: [id])
   publishedAt DateTime @default(now())
+}
+
+model Reaction {
+  id String @id @unique @default(uuid())
+  reactionName String
+  userId     String
+  user User @relation("userReactionRelation",fields: [userId], references: [id])
+  postId     String?
+  post Post? @relation("postReactionRelation",fields: [postId], references: [id])
+  commentId String?
+  comment Comment? @relation("commentReactionRelation",fields: [commentId], references: [id])
+  createdAt DateTime @default(now())
 }

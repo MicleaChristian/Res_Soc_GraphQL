@@ -6,7 +6,15 @@ export const typeDefs = gql`
     substract(number1: Float!, number2: Float!): Float
     multiply(number1: Float!, number2: Float!): Float
     divide(number1: Float!, number2: Float!): Float
-    getPosts: [Post]
+    getPosts: getPostsResponse
+    getUsers: getUsersResponse
+  }
+
+  type getUsersResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    users: [UserClientObject]
   }
 
   type Mutation {
@@ -62,17 +70,11 @@ export const typeDefs = gql`
     id: ID!
     email: String!
     password: String!
-    photo: [Image]
-    post: [Post]
-    comment: [Comment]
   }
 
   type UserClientObject {
     id: ID!
     email: String!
-    photo: [Image]
-    post: [Post]
-    comment: [Comment]
   }
 
 type Post {
@@ -106,6 +108,14 @@ type Post {
     userId: String
     user: User
     commentId: String
+    comment: Comment
+  }
+
+  type Reaction {
+    id: ID!
+    reactionName: String!
+    user: User
+    post: Post
     comment: Comment
   }
 `;
