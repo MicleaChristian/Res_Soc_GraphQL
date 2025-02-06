@@ -1,6 +1,8 @@
 import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
+import { createPost } from "./mutations/posts/posts.js";
+import { createComment } from "./mutations/comments/comments.js";
 import { Resolvers } from "./types.js";
 import { GraphQLError } from "graphql";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
@@ -108,72 +110,8 @@ export const resolvers: Resolvers = {
     }
   },
   Mutation: {
-    createPost: async (_, {title, content, authorId}, context) => {
-      try {
-        const createdPost = await context.dataSources.db.post.create({
-          data: {
-            title,
-            content,
-            authorId
-          }
-        })
-
-        return {
-          code: 201,
-          message: `Post created`,
-          success: true,
-          post: {
-            id: createdPost.id,
-            title: createdPost.title,
-            content: createdPost.content,
-            published: true,
-            publishedAt: createdPost.publishedAt,
-            authorId: createdPost.authorId
-          }
-        }
-      } catch(error) {
-        return {
-          code: 400,
-          message: 'Something bad happened',
-          success: false,
-          post: null
-        }
-      }
-    },
-    createComment: async (_, {title, content, authorId, postId}, context) => {
-      try {
-        const createdComment = await context.dataSources.db.comment.create({
-          data: {
-            title,
-            content,
-            authorId,
-            postId
-          }
-        })
-
-        return {
-          code: 201,
-          message: `Comment created`,
-          success: true,
-          comment: {
-            id: createdComment.id,
-            title: createdComment.title,
-            content: createdComment.content,
-            published: true,
-            publishedAt: createdComment.publishedAt,
-            authorId: createdComment.authorId,
-            postId: createdComment.postId
-          }
-        }
-      } catch(error) {
-        return {
-          code: 400,
-          message: 'Comment not published',
-          success: false,
-          comment: null
-        }
-      }
-    },
+    createPost,
+    createComment,
     createUser,
     signIn,
     createReactionForPost: async (parent, {reactionName, userId, postId}, context) => {
