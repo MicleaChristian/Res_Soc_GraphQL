@@ -16,6 +16,7 @@ export const resolvers: Resolvers = {
       });
     },
   },
+  // find the post that 
   Comment: {
     post: async (parent, _, { dataSources }: DataSourceContext) => {
       return dataSources.db.post.findUniqueOrThrow({
@@ -49,6 +50,53 @@ export const resolvers: Resolvers = {
         post: logzz
       }
     },
+    getPostById: async (_, {id}, { dataSources }) => {
+      try {
+        const postById = await dataSources.db.post.findUnique({
+          where: {
+            id
+          }
+        });
+
+        return {
+          code: 201,
+          message: "Post successfuly returned",
+          success: true,
+          post: postById
+        }
+      } catch(error) {
+        return {
+          code: 400,
+          message: "Post coudn't be returned",
+          success: false,
+          post: null
+        }
+      }
+    },
+    // Get all comments of a post
+    getCommentsByPost: async (_, {postId}, {dataSources}) => {
+      try {
+        const commentByPost = await dataSources.db.comment.findMany({
+          where: {
+            postId
+          }
+        });
+
+        return {
+          code: 200,
+          message: "Comments successfuly returned",
+          success: true,
+          comment: commentByPost
+        }
+      } catch (error) {
+        return {
+          code: 400,
+          message: "Comments coudn't be returned",
+          success: false,
+          comment: null
+        }
+      }
+    }
   },
   Mutation: {
     createPost: async (_, {title, content, authorId}, context) => {
@@ -119,6 +167,45 @@ export const resolvers: Resolvers = {
     },
     createUser,
     signIn,
+    // createReactionForPost: async (_, {reactionName, userId, postId}, context) => {
+    //   try {
+    //     const createdReaction = await context.dataSources.db.reaction.create({
+    //       data: {
+    //         reactionName: {
+    //           include: {
+    //             post: true,
+    //             comment: true
+    //           }
+    //         },
+    //         userId,
+    //         postId
+    //       }
+    //     })
+
+    //     return {
+    //       code: 201,
+    //       message: `Reaction created`,
+    //       success: true,
+    //       reaction : {
+    //         id: createdReaction.id,
+    //         reactionName: createdReaction.reactionName,
+    //         userId: createdReaction.userId,
+    //         postId: createdReaction.postId,
+    //         post: createdReaction.post,
+    //         comment: createdReaction.comment,
+    //         commentId: createdReaction.commentId,
+    //         createdAt: createdReaction.createdAt
+    //       }
+    //     }
+    //   } catch(error) {
+    //     return {
+    //       code: 400,
+    //       message: 'Something bad happened',
+    //       success: false,
+    //       post: null
+    //     }
+    //   }
+    // },
    
   },
 };
