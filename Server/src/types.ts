@@ -133,9 +133,15 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  getCommentsByPost?: Maybe<GetCommentsByPostResponse>;
   getPostById?: Maybe<GetPostByIdResponse>;
   getPosts?: Maybe<GetPostsResponse>;
   getUsers?: Maybe<GetUsersResponse>;
+};
+
+
+export type QueryGetCommentsByPostArgs = {
+  postId: Scalars['ID']['input'];
 };
 
 
@@ -182,6 +188,14 @@ export type UserClientObject = {
   __typename?: 'UserClientObject';
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+};
+
+export type GetCommentsByPostResponse = {
+  __typename?: 'getCommentsByPostResponse';
+  code: Scalars['Int']['output'];
+  comment?: Maybe<Array<Maybe<Comment>>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type GetPostByIdResponse = {
@@ -297,6 +311,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
   UserClientObject: ResolverTypeWrapper<UserClientObject>;
+  getCommentsByPostResponse: ResolverTypeWrapper<Omit<GetCommentsByPostResponse, 'comment'> & { comment?: Maybe<Array<Maybe<ResolversTypes['Comment']>>> }>;
   getPostByIdResponse: ResolverTypeWrapper<Omit<GetPostByIdResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
   getPostsResponse: ResolverTypeWrapper<Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
   getUsersResponse: ResolverTypeWrapper<GetUsersResponse>;
@@ -321,6 +336,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
   User: User;
   UserClientObject: UserClientObject;
+  getCommentsByPostResponse: Omit<GetCommentsByPostResponse, 'comment'> & { comment?: Maybe<Array<Maybe<ResolversParentTypes['Comment']>>> };
   getPostByIdResponse: Omit<GetPostByIdResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
   getPostsResponse: Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
   getUsersResponse: GetUsersResponse;
@@ -404,6 +420,7 @@ export type PostResolvers<ContextType = DataSourceContext, ParentType extends Re
 };
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  getCommentsByPost?: Resolver<Maybe<ResolversTypes['getCommentsByPostResponse']>, ParentType, ContextType, RequireFields<QueryGetCommentsByPostArgs, 'postId'>>;
   getPostById?: Resolver<Maybe<ResolversTypes['getPostByIdResponse']>, ParentType, ContextType, RequireFields<QueryGetPostByIdArgs, 'id'>>;
   getPosts?: Resolver<Maybe<ResolversTypes['getPostsResponse']>, ParentType, ContextType>;
   getUsers?: Resolver<Maybe<ResolversTypes['getUsersResponse']>, ParentType, ContextType>;
@@ -439,6 +456,14 @@ export type UserResolvers<ContextType = DataSourceContext, ParentType extends Re
 export type UserClientObjectResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['UserClientObject'] = ResolversParentTypes['UserClientObject']> = {
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GetCommentsByPostResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['getCommentsByPostResponse'] = ResolversParentTypes['getCommentsByPostResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -480,6 +505,7 @@ export type Resolvers<ContextType = DataSourceContext> = {
   SignInUserResponse?: SignInUserResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserClientObject?: UserClientObjectResolvers<ContextType>;
+  getCommentsByPostResponse?: GetCommentsByPostResponseResolvers<ContextType>;
   getPostByIdResponse?: GetPostByIdResponseResolvers<ContextType>;
   getPostsResponse?: GetPostsResponseResolvers<ContextType>;
   getUsersResponse?: GetUsersResponseResolvers<ContextType>;

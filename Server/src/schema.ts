@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Query {
     getPosts: getPostsResponse
     getPostById(id: ID!): getPostByIdResponse
+    getCommentsByPost(postId: ID!): getCommentsByPostResponse
     getUsers: getUsersResponse
   }
 
@@ -62,6 +63,13 @@ export const typeDefs = gql`
     success: Boolean!
     message: String
     post: Post
+  }
+
+  type getCommentsByPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    comment: [Comment]
   }
 
   type SignInUserResponse {
