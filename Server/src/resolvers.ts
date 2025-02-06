@@ -2,6 +2,7 @@ import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
 import { createPost } from "./mutations/posts/posts.js";
+import { createReactionForPost } from "./mutations/reactions/createReactionForPost.js";
 import { getUsers } from "./queries/users/users.js";
 import { getCommentsByPost } from "./queries/comments/comments.js";
 import { createComment } from "./mutations/comments/comments.js";
@@ -84,30 +85,7 @@ export const resolvers: Resolvers = {
     createComment,
     createUser,
     signIn,
-    createReactionForPost: async (parent, {reactionName, userId, postId}, context) => {
-      try {
-        const createdReaction = await context.dataSources.db.reactionForPost.create({
-          data: {
-            reactionName,
-            userId,
-            postId,
-          }
-        })
-
-        return {
-          code: 201,
-          message: `Reaction created`,
-          success: true,
-          
-        }
-      } catch(error) {
-        return {
-          code: 400,
-          message: 'Something bad happened',
-          success: false,
-          post: null
-        }
-      }
-    },
+    createReactionForPost
+   
   },
 };
