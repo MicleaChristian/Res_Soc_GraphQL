@@ -133,36 +133,14 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
-  add?: Maybe<Scalars['Float']['output']>;
-  divide?: Maybe<Scalars['Float']['output']>;
+  getPostById?: Maybe<GetPostByIdResponse>;
   getPosts?: Maybe<GetPostsResponse>;
   getUsers?: Maybe<GetUsersResponse>;
-  multiply?: Maybe<Scalars['Float']['output']>;
-  substract?: Maybe<Scalars['Float']['output']>;
 };
 
 
-export type QueryAddArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
-};
-
-
-export type QueryDivideArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
-};
-
-
-export type QueryMultiplyArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
-};
-
-
-export type QuerySubstractArgs = {
-  number1: Scalars['Float']['input'];
-  number2: Scalars['Float']['input'];
+export type QueryGetPostByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Reaction = {
@@ -204,6 +182,14 @@ export type UserClientObject = {
   __typename?: 'UserClientObject';
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+};
+
+export type GetPostByIdResponse = {
+  __typename?: 'getPostByIdResponse';
+  code: Scalars['Int']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  post?: Maybe<Post>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type GetPostsResponse = {
@@ -299,7 +285,6 @@ export type ResolversTypes = {
   CreatePostResponse: ResolverTypeWrapper<Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
   CreateReactionResponse: ResolverTypeWrapper<Omit<CreateReactionResponse, 'reaction'> & { reaction?: Maybe<ResolversTypes['Reaction']> }>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Image: ResolverTypeWrapper<ImageModel>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
@@ -312,6 +297,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
   UserClientObject: ResolverTypeWrapper<UserClientObject>;
+  getPostByIdResponse: ResolverTypeWrapper<Omit<GetPostByIdResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
   getPostsResponse: ResolverTypeWrapper<Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
   getUsersResponse: ResolverTypeWrapper<GetUsersResponse>;
 };
@@ -324,7 +310,6 @@ export type ResolversParentTypes = {
   CreatePostResponse: Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
   CreateReactionResponse: Omit<CreateReactionResponse, 'reaction'> & { reaction?: Maybe<ResolversParentTypes['Reaction']> };
   CreateUserResponse: CreateUserResponse;
-  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Image: ImageModel;
   Int: Scalars['Int']['output'];
@@ -336,6 +321,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
   User: User;
   UserClientObject: UserClientObject;
+  getPostByIdResponse: Omit<GetPostByIdResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
   getPostsResponse: Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
   getUsersResponse: GetUsersResponse;
 };
@@ -418,12 +404,9 @@ export type PostResolvers<ContextType = DataSourceContext, ParentType extends Re
 };
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  add?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryAddArgs, 'number1' | 'number2'>>;
-  divide?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryDivideArgs, 'number1' | 'number2'>>;
+  getPostById?: Resolver<Maybe<ResolversTypes['getPostByIdResponse']>, ParentType, ContextType, RequireFields<QueryGetPostByIdArgs, 'id'>>;
   getPosts?: Resolver<Maybe<ResolversTypes['getPostsResponse']>, ParentType, ContextType>;
   getUsers?: Resolver<Maybe<ResolversTypes['getUsersResponse']>, ParentType, ContextType>;
-  multiply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QueryMultiplyArgs, 'number1' | 'number2'>>;
-  substract?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType, RequireFields<QuerySubstractArgs, 'number1' | 'number2'>>;
 };
 
 export type ReactionResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Reaction'] = ResolversParentTypes['Reaction']> = {
@@ -459,6 +442,14 @@ export type UserClientObjectResolvers<ContextType = DataSourceContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GetPostByIdResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['getPostByIdResponse'] = ResolversParentTypes['getPostByIdResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type GetPostsResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['getPostsResponse'] = ResolversParentTypes['getPostsResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -489,6 +480,7 @@ export type Resolvers<ContextType = DataSourceContext> = {
   SignInUserResponse?: SignInUserResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserClientObject?: UserClientObjectResolvers<ContextType>;
+  getPostByIdResponse?: GetPostByIdResponseResolvers<ContextType>;
   getPostsResponse?: GetPostsResponseResolvers<ContextType>;
   getUsersResponse?: GetUsersResponseResolvers<ContextType>;
 };

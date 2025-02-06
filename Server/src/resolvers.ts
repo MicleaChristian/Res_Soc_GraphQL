@@ -50,6 +50,29 @@ export const resolvers: Resolvers = {
         post: logzz
       }
     },
+    getPostById: async (_, {id}, { dataSources }) => {
+      try {
+        const postById = await dataSources.db.post.findUnique({
+          where: {
+            id
+          }
+        });
+
+        return {
+          code: 201,
+          message: "Post successfuly returned",
+          success: true,
+          post: postById
+        }
+      } catch(error) {
+        return {
+          code: 400,
+          message: "Post coudn't be returned",
+          success: false,
+          post: null
+        }
+      }
+    }
   },
   Mutation: {
     createPost: async (_, {title, content, authorId}, context) => {
