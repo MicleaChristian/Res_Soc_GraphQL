@@ -1,12 +1,8 @@
-export type PostModel = {
-  id: string;
-  title: string;
-  content: string;
-  published: boolean;
-  authorId: string;
-  publishedAt: Date;
-};
+import { Post, User } from "@prisma/client";
 
+export type PostModel = Post;
+
+export type UserModel = Omit<User, 'password'>
 export type CommentModel = {
   id: string;
   title: string;
@@ -16,6 +12,7 @@ export type CommentModel = {
   postId: string;
   publishedAt: Date;
 };
+
 
 export type ImageModel = {
   id: string;

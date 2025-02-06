@@ -9,40 +9,25 @@ import { getPosts } from "./queries/posts/getPosts.js";
 import { getCommentsByPost } from "./queries/comments/getCommentsByPost.js";
 import { createComment } from "./mutations/comments/createdComment.js";
 import { Resolvers } from "./types.js";
+import {comments} from "./queries/posts/subQuerries/postComment.js";
+import {post} from "./queries/comments/subQueries/commentPost.js";
+import {post as reactionPost} from "./queries/reactions/subQueries/reactionPost.js";
 
 
 export const resolvers: Resolvers = {
   Post: {
-    comments: async (parent, _, { dataSources }: DataSourceContext) => {
-      return dataSources.db.comment.findMany({
-        where: {
-          postId: parent.id,
-        },
-      });
-    },
+    comments,
   },
   // find the post that 
   Comment: {
-    post: async (parent, _, { dataSources }: DataSourceContext) => {
-      return dataSources.db.post.findUniqueOrThrow({
-        where: {
-          id: parent.postId,
-        },
-      });
-    },
+    post
   },
   ReactionForPost: {
-    post: async (parent, _, { dataSources }: DataSourceContext) =>{
-      return dataSources.db.post.findUniqueOrThrow({
-        where: {
-          id: parent.postId,
-        },
-      });
-    }
+    post: reactionPost,
   },
   Query: {
-    // promise getPosts find many post
     getUsers,
+    // promise getPosts find many post
     getPosts,
     getPostById,
     // Get all comments of a post
