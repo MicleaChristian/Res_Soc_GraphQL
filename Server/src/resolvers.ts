@@ -1,11 +1,11 @@
 import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
-import { createPost } from "./mutations/posts/posts.js";
+import { createPost } from "./mutations/posts/createPost.js";
 import { createReactionForPost } from "./mutations/reactions/createReactionForPost.js";
-import { getUsers } from "./queries/users/users.js";
-import { getCommentsByPost } from "./queries/comments/comments.js";
-import { createComment } from "./mutations/comments/comments.js";
+import { getUsers } from "./queries/users/getUsers.js";
+import { getCommentsByPost } from "./queries/comments/getCommentsByPost.js";
+import { createComment } from "./mutations/comments/createdComment.js";
 import { Resolvers } from "./types.js";
 import { GraphQLError } from "graphql";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
