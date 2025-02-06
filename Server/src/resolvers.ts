@@ -2,6 +2,7 @@ import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
 import { createPost } from "./mutations/posts/posts.js";
+import { getUsers } from "./querys/users/users.js";
 import { createComment } from "./mutations/comments/comments.js";
 import { Resolvers } from "./types.js";
 import { GraphQLError } from "graphql";
@@ -39,17 +40,7 @@ export const resolvers: Resolvers = {
   },
   Query: {
     // promise getPosts find many post
-    getUsers: async (_, __, {dataSources}) => {
-      const logzz = await dataSources.db.user.findMany();
-      
-      return {
-        code: 201,
-        message: 'All users successfuly returned',
-        success: true,
-        users: logzz
-      }
-        
-    },
+    getUsers,
     getPosts: async (_, __, { dataSources }) => {
       const logzz = await dataSources.db.post.findMany();
       console.log(logzz);
