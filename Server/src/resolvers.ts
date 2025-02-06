@@ -2,7 +2,8 @@ import { DataSourceContext } from "./context.js";
 import { signIn } from "./mutations/signIn.js";
 import { createUser } from "./mutations/users/createUser.js";
 import { createPost } from "./mutations/posts/posts.js";
-import { getUsers } from "./querys/users/users.js";
+import { getUsers } from "./queries/users/users.js";
+import { getCommentsByPost } from "./queries/comments/comments.js";
 import { createComment } from "./mutations/comments/comments.js";
 import { Resolvers } from "./types.js";
 import { GraphQLError } from "graphql";
@@ -76,29 +77,7 @@ export const resolvers: Resolvers = {
       }
     },
     // Get all comments of a post
-    getCommentsByPost: async (_, {postId}, {dataSources}) => {
-      try {
-        const commentByPost = await dataSources.db.comment.findMany({
-          where: {
-            postId
-          }
-        });
-
-        return {
-          code: 200,
-          message: "Comments successfuly returned",
-          success: true,
-          comment: commentByPost
-        }
-      } catch (error) {
-        return {
-          code: 400,
-          message: "Comments coudn't be returned",
-          success: false,
-          comment: null
-        }
-      }
-    }
+    getCommentsByPost
   },
   Mutation: {
     createPost,
@@ -130,7 +109,5 @@ export const resolvers: Resolvers = {
         }
       }
     },
-    
-   
   },
 };
