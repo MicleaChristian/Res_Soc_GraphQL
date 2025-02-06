@@ -21,10 +21,10 @@ export type ImageModel = {
   id: string;
   url: string;
   postId: string | null;
-  // post: PostModel | null;
+  post: PostModel | null;
   userId: string | null;
   commentId: string | null;
-  // comment: CommentModel | null;
+  comment: CommentModel | null;
   publishedAt:   Date;
 
 }
@@ -34,8 +34,8 @@ export type ReactionModel = {
   reactionName: string
   userId: string
   postId: string | null;
-  // post: PostModel | null;
+  post: PostModel | null;
   commentId: string | null;
-  // comment: CommentModel | null;
+  comment: CommentModel | null;
   createdAt: Date;
 }

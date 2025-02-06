@@ -61,7 +61,7 @@ model Image {
 
 model Reaction {
   id String @id @unique @default(uuid())
-  reactionName String
+  reactionName ReactionStateEnum
   userId     String
   user User @relation("userReactionRelation",fields: [userId], references: [id])
   postId     String?
@@ -69,4 +69,12 @@ model Reaction {
   commentId String?
   comment Comment? @relation("commentReactionRelation",fields: [commentId], references: [id])
   createdAt DateTime @default(now())
+}
+
+enum ReactionStateEnum {
+  LIKE
+  HEART
+  LAUGH
+  SMILE
+  DISLIKE
 }

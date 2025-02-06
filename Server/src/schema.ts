@@ -22,6 +22,14 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): SignInUserResponse
     createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
     createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
+    createReactionForPost(reactionName: ReactionStateEnum!, userId: ID!, postId: ID!) : CreateReactionResponse
+  }
+
+  type CreateReactionResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: Reaction
   }
 
   type CreatePostResponse {
@@ -113,9 +121,20 @@ type Post {
 
   type Reaction {
     id: ID!
-    reactionName: String!
-    user: User
+    reactionName: ReactionStateEnum!
+    user: User!
+    userId: String!
+    postId: String
     post: Post
+    commentId: String
     comment: Comment
+  }
+  
+  enum ReactionStateEnum {
+    LIKE
+    HEART
+    LAUGH
+    SMILE
+    DISLIKE
   }
 `;

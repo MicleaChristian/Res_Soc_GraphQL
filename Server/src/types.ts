@@ -48,6 +48,14 @@ export type CreatePostResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type CreateReactionResponse = {
+  __typename?: 'CreateReactionResponse';
+  code: Scalars['Int']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  reaction?: Maybe<Reaction>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreateUserResponse = {
   __typename?: 'CreateUserResponse';
   code: Scalars['Int']['output'];
@@ -72,6 +80,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createComment?: Maybe<CreateCommentResponse>;
   createPost?: Maybe<CreatePostResponse>;
+  createReactionForPost?: Maybe<CreateReactionResponse>;
   createUser?: Maybe<CreateUserResponse>;
   signIn?: Maybe<SignInUserResponse>;
 };
@@ -89,6 +98,13 @@ export type MutationCreatePostArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   title: Scalars['String']['input'];
+};
+
+
+export type MutationCreateReactionForPostArgs = {
+  postId: Scalars['ID']['input'];
+  reactionName: ReactionStateEnum;
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -152,11 +168,22 @@ export type QuerySubstractArgs = {
 export type Reaction = {
   __typename?: 'Reaction';
   comment?: Maybe<Comment>;
+  commentId?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   post?: Maybe<Post>;
-  reactionName: Scalars['String']['output'];
-  user?: Maybe<User>;
+  postId?: Maybe<Scalars['String']['output']>;
+  reactionName: ReactionStateEnum;
+  user: User;
+  userId: Scalars['String']['output'];
 };
+
+export enum ReactionStateEnum {
+  Dislike = 'DISLIKE',
+  Heart = 'HEART',
+  Laugh = 'LAUGH',
+  Like = 'LIKE',
+  Smile = 'SMILE'
+}
 
 export type SignInUserResponse = {
   __typename?: 'SignInUserResponse';
@@ -270,6 +297,7 @@ export type ResolversTypes = {
   Comment: ResolverTypeWrapper<CommentModel>;
   CreateCommentResponse: ResolverTypeWrapper<Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
   CreatePostResponse: ResolverTypeWrapper<Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
+  CreateReactionResponse: ResolverTypeWrapper<Omit<CreateReactionResponse, 'reaction'> & { reaction?: Maybe<ResolversTypes['Reaction']> }>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
@@ -279,6 +307,7 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<PostModel>;
   Query: ResolverTypeWrapper<{}>;
   Reaction: ResolverTypeWrapper<ReactionModel>;
+  ReactionStateEnum: ReactionStateEnum;
   SignInUserResponse: ResolverTypeWrapper<SignInUserResponse>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
@@ -293,6 +322,7 @@ export type ResolversParentTypes = {
   Comment: CommentModel;
   CreateCommentResponse: Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
   CreatePostResponse: Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
+  CreateReactionResponse: Omit<CreateReactionResponse, 'reaction'> & { reaction?: Maybe<ResolversParentTypes['Reaction']> };
   CreateUserResponse: CreateUserResponse;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
@@ -339,6 +369,14 @@ export type CreatePostResponseResolvers<ContextType = DataSourceContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CreateReactionResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateReactionResponse'] = ResolversParentTypes['CreateReactionResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  reaction?: Resolver<Maybe<ResolversTypes['Reaction']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CreateUserResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateUserResponse'] = ResolversParentTypes['CreateUserResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -362,6 +400,7 @@ export type ImageResolvers<ContextType = DataSourceContext, ParentType extends R
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'authorId' | 'content' | 'postId' | 'title'>>;
   createPost?: Resolver<Maybe<ResolversTypes['CreatePostResponse']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'authorId' | 'content' | 'title'>>;
+  createReactionForPost?: Resolver<Maybe<ResolversTypes['CreateReactionResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForPostArgs, 'postId' | 'reactionName' | 'userId'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInUserResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
 };
@@ -389,10 +428,13 @@ export type QueryResolvers<ContextType = DataSourceContext, ParentType extends R
 
 export type ReactionResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Reaction'] = ResolversParentTypes['Reaction']> = {
   comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  commentId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
-  reactionName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  postId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  reactionName?: Resolver<ResolversTypes['ReactionStateEnum'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -437,6 +479,7 @@ export type Resolvers<ContextType = DataSourceContext> = {
   Comment?: CommentResolvers<ContextType>;
   CreateCommentResponse?: CreateCommentResponseResolvers<ContextType>;
   CreatePostResponse?: CreatePostResponseResolvers<ContextType>;
+  CreateReactionResponse?: CreateReactionResponseResolvers<ContextType>;
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
