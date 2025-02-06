@@ -6,6 +6,8 @@ export const typeDefs = gql`
     getPostById(id: ID!): getPostByIdResponse
     getCommentsByPost(postId: ID!): getCommentsByPostResponse
     getUsers: getUsersResponse
+    getUserReactionByPost(userId: ID!, postId: ID!) : getUserReactionByPostResponse
+    getUserReactionForAllCommentsInAPost(userId: ID!, commentId: ID!, postId: ID!) : GetUserReactionForAllCommentsInAPostResponse
   }
 
   type getUsersResponse {
@@ -23,6 +25,28 @@ export const typeDefs = gql`
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
     createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
     createImageForPost(url: String!, postId: ID!) : CreateImageForPostResponse
+    createImageForComment(url: String!, commentId: ID!) : CreateImageForCommentResponse
+  }
+
+  type GetUserReactionForAllCommentsInAPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reactions: [ReactionForComment]
+  }
+
+  type getUserReactionByPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: ReactionForPostClientResponse
+  }
+
+  type CreateImageForCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    image: Image
   }
 
   type CreateImageForPostResponse {

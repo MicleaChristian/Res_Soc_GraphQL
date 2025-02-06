@@ -14,7 +14,9 @@ import {post} from "./queries/comments/subQueries/commentPost.js";
 import {post as reactionPost} from "./queries/reactions/subQueries/reactionPost.js";
 import {createReactionForComment} from "./mutations/reactions/createReactionForComment.js";
 import {createImageForPost} from "./mutations/images/imagePosts/createImageForPost.js";
-
+import {createImageForComment} from "./mutations/images/imageComments/createImageForComment.js";
+import {getUserReactionByPost} from "./queries/reactions/getUserReactionByPost.js"
+import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserReactionByComment.js"
 
 
 export const resolvers: Resolvers = {
@@ -34,7 +36,9 @@ export const resolvers: Resolvers = {
     getPosts,
     getPostById,
     // Get all comments of a post
-    getCommentsByPost
+    getCommentsByPost,
+    getUserReactionByPost,
+    getUserReactionForAllCommentsInAPost
   },
   Mutation: {
     createPost,
@@ -43,6 +47,7 @@ export const resolvers: Resolvers = {
     signIn,
     createReactionForPost,
     createReactionForComment,
-    createImageForPost
+    createImageForPost,
+    createImageForComment
   },
 };

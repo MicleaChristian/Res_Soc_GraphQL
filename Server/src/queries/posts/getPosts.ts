@@ -1,13 +1,12 @@
 import { QueryResolvers } from "../../types.js";
 
 export const getPosts : QueryResolvers['getPosts']  = async (_, __, { dataSources }) => {
-    const logzz = await dataSources.db.post.findMany();
-    console.log(logzz);
+    const posts = await dataSources.db.post.findMany();
 
     return {
       code: 201,
-      message: 'All users successfuly returned',
+      message: 'All posts successfuly returned',
       success: true,
-      post: logzz
+      post: posts
     }
   }
