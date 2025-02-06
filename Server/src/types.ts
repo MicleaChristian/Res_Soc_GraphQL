@@ -202,7 +202,7 @@ export type ReactionForCommentClientResponse = {
   __typename?: 'ReactionForCommentClientResponse';
   commentId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  reactionName: ReactionPostStateEnum;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -220,7 +220,7 @@ export type ReactionForPostClientResponse = {
   __typename?: 'ReactionForPostClientResponse';
   id: Scalars['ID']['output'];
   postId: Scalars['String']['output'];
-  reactionName: ReactionPostStateEnum;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -531,7 +531,7 @@ export type ReactionForCommentResolvers<ContextType = DataSourceContext, ParentT
 export type ReactionForCommentClientResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['ReactionForCommentClientResponse'] = ResolversParentTypes['ReactionForCommentClientResponse']> = {
   commentId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  reactionName?: Resolver<ResolversTypes['ReactionPostStateEnum'], ParentType, ContextType>;
+  reactionName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -549,7 +549,7 @@ export type ReactionForPostResolvers<ContextType = DataSourceContext, ParentType
 export type ReactionForPostClientResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['ReactionForPostClientResponse'] = ResolversParentTypes['ReactionForPostClientResponse']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  reactionName?: Resolver<ResolversTypes['ReactionPostStateEnum'], ParentType, ContextType>;
+  reactionName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

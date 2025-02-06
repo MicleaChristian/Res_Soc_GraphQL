@@ -14,7 +14,12 @@ export const createReactionForComment: MutationResolvers['createReactionForComme
         code: 201,
         message: `Reaction created`,
         success: true,
-        
+        reaction: {
+            commentId: createdReaction.commentId,
+            id: createdReaction.id, 
+            reactionName: createdReaction.reactionName, 
+            userId: createdReaction.userId
+        }
       }
     } catch(error) {
       return {

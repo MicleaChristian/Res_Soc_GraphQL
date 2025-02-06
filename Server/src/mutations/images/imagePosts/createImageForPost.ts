@@ -3,7 +3,7 @@ import { MutationResolvers } from "../../../types.js";
 
 export const createImageForPost: MutationResolvers['createImageForPost'] = async (_, {url, postId}, context) => {
     try {
-      const createdComment = await context.dataSources.db.image.create({
+      const createdImage = await context.dataSources.db.image.create({
         data: {
           url,
           postId
@@ -14,10 +14,13 @@ export const createImageForPost: MutationResolvers['createImageForPost'] = async
         code: 201,
         message: `image created`,
         success: true,
-        comment: {
-          id: createdComment.id,
-          url: createdComment.url,
-          postId: createdComment.postId
+        image: {
+          id: createdImage.id,
+          url: createdImage.url,
+          userId: createdImage.userId,
+          postId: createdImage.postId,
+          commentId: null,
+          publishedAt: createdImage.publishedAt
         }
       }
     } catch(error) {
@@ -26,14 +29,14 @@ export const createImageForPost: MutationResolvers['createImageForPost'] = async
                 code: 401,
                 message: error.message,
                 success: false,
-                comment: null
+                image: null
             }
         }
         return {
             code: 400,
             message: (error as Error).message,
             success: false,
-            comment: null
+            image: null
         }
     }
   };

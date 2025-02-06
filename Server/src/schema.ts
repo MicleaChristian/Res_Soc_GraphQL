@@ -41,7 +41,7 @@ export const typeDefs = gql`
   
   type ReactionForCommentClientResponse {
     id: ID!
-    reactionName: ReactionPostStateEnum!
+    reactionName: String!
     userId: String!
     commentId: String!
   }
@@ -156,7 +156,7 @@ type Post {
   
   type ReactionForPostClientResponse {
     id: ID!
-    reactionName: ReactionPostStateEnum!
+    reactionName: String!
     userId: String!
     postId: String!
   }
