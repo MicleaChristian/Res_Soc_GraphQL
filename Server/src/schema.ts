@@ -20,14 +20,14 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): SignInUserResponse
     createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
     createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
-    createReactionForPost(reactionName: ReactionStateEnum!, userId: ID!, postId: ID!) : CreateReactionResponse
+    createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
   }
 
-  type CreateReactionResponse {
+  type CreateReactionForPostResponse {
     code: Int!
     success: Boolean!
     message: String
-    reaction: Reaction
+    reaction: ReactionForPostClientResponse
   }
 
   type CreatePostResponse {
@@ -130,19 +130,41 @@ type Post {
     commentId: String
     comment: Comment
   }
-
-  type Reaction {
+  
+  type ReactionForPostClientResponse {
     id: ID!
-    reactionName: ReactionStateEnum!
+    reactionName: ReactionPostStateEnum!
+    userId: String!
+    postId: String!
+  }
+
+  type ReactionForPost {
+    id: ID!
+    reactionName: ReactionPostStateEnum!
     user: User!
     userId: String!
-    postId: String
-    post: Post
-    commentId: String
-    comment: Comment
+    postId: String!
+    post: Post!
   }
   
-  enum ReactionStateEnum {
+  type ReactionForComment {
+    id: ID!
+    reactionName: ReactionCommentStateEnum!
+    user: User!
+    userId: String!
+    commentId: String!
+    comment: Comment!
+  }
+
+  enum ReactionCommentStateEnum {
+    LIKE
+    HEART
+    LAUGH
+    SMILE
+    DISLIKE
+  }
+  
+  enum ReactionPostStateEnum {
     LIKE
     HEART
     LAUGH

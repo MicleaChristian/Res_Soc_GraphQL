@@ -43,16 +43,25 @@ CREATE TABLE "Image" (
 );
 
 -- CreateTable
-CREATE TABLE "Reaction" (
+CREATE TABLE "ReactionForPost" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "reactionName" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "postId" TEXT,
-    "commentId" TEXT,
+    "postId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Reaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Reaction_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT "Reaction_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "ReactionForPost_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "ReactionForPost_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ReactionForComment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "reactionName" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "commentId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ReactionForComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "ReactionForComment_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -71,4 +80,7 @@ CREATE UNIQUE INDEX "Comment_id_key" ON "Comment"("id");
 CREATE UNIQUE INDEX "Image_id_key" ON "Image"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Reaction_id_key" ON "Reaction"("id");
+CREATE UNIQUE INDEX "ReactionForPost_id_key" ON "ReactionForPost"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ReactionForComment_id_key" ON "ReactionForComment"("id");

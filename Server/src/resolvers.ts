@@ -26,6 +26,15 @@ export const resolvers: Resolvers = {
       });
     },
   },
+  ReactionForPost: {
+    post: async (parent, _, { dataSources }: DataSourceContext) =>{
+      return dataSources.db.post.findUniqueOrThrow({
+        where: {
+          id: parent.postId,
+        },
+      });
+    }
+  },
   Query: {
     // promise getPosts find many post
     getUsers: async (_, __, {dataSources}) => {
@@ -167,45 +176,32 @@ export const resolvers: Resolvers = {
     },
     createUser,
     signIn,
-    // createReactionForPost: async (_, {reactionName, userId, postId}, context) => {
-    //   try {
-    //     const createdReaction = await context.dataSources.db.reaction.create({
-    //       data: {
-    //         reactionName: {
-    //           include: {
-    //             post: true,
-    //             comment: true
-    //           }
-    //         },
-    //         userId,
-    //         postId
-    //       }
-    //     })
+    createReactionForPost: async (parent, {reactionName, userId, postId}, context) => {
+      try {
+        const createdReaction = await context.dataSources.db.reactionForPost.create({
+          data: {
+            reactionName,
+            userId,
+            postId,
+          }
+        })
 
-    //     return {
-    //       code: 201,
-    //       message: `Reaction created`,
-    //       success: true,
-    //       reaction : {
-    //         id: createdReaction.id,
-    //         reactionName: createdReaction.reactionName,
-    //         userId: createdReaction.userId,
-    //         postId: createdReaction.postId,
-    //         post: createdReaction.post,
-    //         comment: createdReaction.comment,
-    //         commentId: createdReaction.commentId,
-    //         createdAt: createdReaction.createdAt
-    //       }
-    //     }
-    //   } catch(error) {
-    //     return {
-    //       code: 400,
-    //       message: 'Something bad happened',
-    //       success: false,
-    //       post: null
-    //     }
-    //   }
-    // },
+        return {
+          code: 201,
+          message: `Reaction created`,
+          success: true,
+          
+        }
+      } catch(error) {
+        return {
+          code: 400,
+          message: 'Something bad happened',
+          success: false,
+          post: null
+        }
+      }
+    },
+    
    
   },
 };

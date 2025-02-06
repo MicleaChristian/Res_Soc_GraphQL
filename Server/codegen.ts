@@ -8,10 +8,11 @@ const config: CodegenConfig = {
       config: {
         contextType: './context#DataSourceContext',
         mappers: {
-          Reaction: './models#ReactionModel',
+          ReactionForPostModel: './models#ReactionForPostModel',
           Post: './models#PostModel',
           Comment: './models#CommentModel',
           Image: './models#ImageModel',
+          ReactionForCommentModel: './models#ReactionForCommentModel',
         }
       }
     }

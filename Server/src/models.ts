@@ -21,21 +21,28 @@ export type ImageModel = {
   id: string;
   url: string;
   postId: string | null;
-  post: PostModel | null;
+  // post: PostModel | null;
   userId: string | null;
   commentId: string | null;
-  comment: CommentModel | null;
+  // comment: CommentModel | null;
   publishedAt:   Date;
 
 }
 
-export type ReactionModel = {
+export type ReactionForPostModel = {
   id: string;
   reactionName: string
   userId: string
-  postId: string | null;
-  post: PostModel | null;
-  commentId: string | null;
-  comment: CommentModel | null;
+  postId: string;
+  // post: PostModel;
+  createdAt: Date;
+}
+
+export type ReactionForCommentModel = {
+  id: string;
+  reactionName: string
+  userId: string
+  commentId: string;
+  // comment: CommentModel;
   createdAt: Date;
 }
