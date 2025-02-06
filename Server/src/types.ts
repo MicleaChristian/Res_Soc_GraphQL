@@ -32,6 +32,22 @@ export type Comment = {
   title: Scalars['String']['output'];
 };
 
+export type CreateCommentResponse = {
+  __typename?: 'CreateCommentResponse';
+  code: Scalars['Int']['output'];
+  comment?: Maybe<Comment>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type CreatePostResponse = {
+  __typename?: 'CreatePostResponse';
+  code: Scalars['Int']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  post?: Maybe<Post>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreateUserResponse = {
   __typename?: 'CreateUserResponse';
   code: Scalars['Int']['output'];
@@ -54,8 +70,25 @@ export type Image = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createComment?: Maybe<CreateCommentResponse>;
+  createPost?: Maybe<CreatePostResponse>;
   createUser?: Maybe<CreateUserResponse>;
   signIn?: Maybe<SignInUserResponse>;
+};
+
+
+export type MutationCreateCommentArgs = {
+  authorId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  postId: Scalars['ID']['input'];
+  title: Scalars['String']['input'];
+};
+
+
+export type MutationCreatePostArgs = {
+  authorId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  title: Scalars['String']['input'];
 };
 
 
@@ -142,6 +175,14 @@ export type UserClientObject = {
   post?: Maybe<Array<Maybe<Post>>>;
 };
 
+export type GetPostsResponse = {
+  __typename?: 'getPostsResponse';
+  code: Scalars['Int']['output'];
+  message?: Maybe<Scalars['String']['output']>;
+  post?: Maybe<Array<Maybe<Post>>>;
+  success: Scalars['Boolean']['output'];
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -215,6 +256,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Comment: ResolverTypeWrapper<CommentModel>;
+  CreateCommentResponse: ResolverTypeWrapper<Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
+  CreatePostResponse: ResolverTypeWrapper<Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversTypes['Post']> }>;
   CreateUserResponse: ResolverTypeWrapper<Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversTypes['UserClientObject']> }>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
@@ -227,12 +270,15 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<Omit<User, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
   UserClientObject: ResolverTypeWrapper<Omit<UserClientObject, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
+  getPostsResponse: ResolverTypeWrapper<Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversTypes['Post']>>> }>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Comment: CommentModel;
+  CreateCommentResponse: Omit<CreateCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
+  CreatePostResponse: Omit<CreatePostResponse, 'post'> & { post?: Maybe<ResolversParentTypes['Post']> };
   CreateUserResponse: Omit<CreateUserResponse, 'user'> & { user?: Maybe<ResolversParentTypes['UserClientObject']> };
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
@@ -245,6 +291,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
   User: Omit<User, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversParentTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversParentTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
   UserClientObject: Omit<UserClientObject, 'comment' | 'photo' | 'post'> & { comment?: Maybe<Array<Maybe<ResolversParentTypes['Comment']>>>, photo?: Maybe<Array<Maybe<ResolversParentTypes['Image']>>>, post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
+  getPostsResponse: Omit<GetPostsResponse, 'post'> & { post?: Maybe<Array<Maybe<ResolversParentTypes['Post']>>> };
 };
 
 export type CommentResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
@@ -257,6 +304,22 @@ export type CommentResolvers<ContextType = DataSourceContext, ParentType extends
   postId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreateCommentResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreateCommentResponse'] = ResolversParentTypes['CreateCommentResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CreatePostResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['CreatePostResponse'] = ResolversParentTypes['CreatePostResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -281,6 +344,8 @@ export type ImageResolvers<ContextType = DataSourceContext, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'authorId' | 'content' | 'postId' | 'title'>>;
+  createPost?: Resolver<Maybe<ResolversTypes['CreatePostResponse']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'authorId' | 'content' | 'title'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInUserResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
 };
@@ -332,8 +397,18 @@ export type UserClientObjectResolvers<ContextType = DataSourceContext, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GetPostsResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['getPostsResponse'] = ResolversParentTypes['getPostsResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  post?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = DataSourceContext> = {
   Comment?: CommentResolvers<ContextType>;
+  CreateCommentResponse?: CreateCommentResponseResolvers<ContextType>;
+  CreatePostResponse?: CreatePostResponseResolvers<ContextType>;
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
@@ -342,5 +417,6 @@ export type Resolvers<ContextType = DataSourceContext> = {
   SignInUserResponse?: SignInUserResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserClientObject?: UserClientObjectResolvers<ContextType>;
+  getPostsResponse?: GetPostsResponseResolvers<ContextType>;
 };
 

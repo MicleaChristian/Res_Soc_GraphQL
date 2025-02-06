@@ -1,18 +1,54 @@
-import { gql, useQuery } from "@apollo/client";
-
-const GET_POSTS = gql`
-  query GetPosts {
-    posts {
-      id
-    }
-  }
-`;
+import { useEffect, useState } from "react";
 
 const Feeds: React.FC = () => {
-  const { data, error, loading } = useQuery(GET_POSTS, {
-    variables: {},
-  });
-  console.log(data, error, loading);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [data, setData] = useState(null);
+
+  const getPosts = async () => {
+    try {
+      // fetch posts
+      const posts = await fetch("http://localhost:4000/graphql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `
+            query {
+              posts {
+                id
+                title
+                content
+                image
+              }
+            }
+          `,
+        }),
+      });
+
+      console.log(posts.text());
+
+      if (!posts.ok) {
+        setError(true);
+        setLoading(false);
+      }
+
+      const postsData = await posts.json();
+
+      setData(postsData);
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   if (loading)
     return (
@@ -21,7 +57,7 @@ const Feeds: React.FC = () => {
       </div>
     );
 
-  if (error || !data?.character)
+  if (error || !data)
     return (
       <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
         No posts found
