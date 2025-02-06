@@ -8,6 +8,7 @@ const config: CodegenConfig = {
       config: {
         contextType: './context#DataSourceContext',
         mappers: {
+          Reaction: './models#ReactionModel',
           Post: './models#PostModel',
           Comment: './models#CommentModel',
           Image: './models#ImageModel',

@@ -42,6 +42,19 @@ CREATE TABLE "Image" (
     CONSTRAINT "Image_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "Reaction" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "reactionName" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "postId" TEXT,
+    "commentId" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Reaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Reaction_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Reaction_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
@@ -56,3 +69,6 @@ CREATE UNIQUE INDEX "Comment_id_key" ON "Comment"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Image_id_key" ON "Image"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Reaction_id_key" ON "Reaction"("id");
