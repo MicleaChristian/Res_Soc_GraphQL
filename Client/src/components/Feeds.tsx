@@ -13,6 +13,13 @@ type Post = {
   comments: Comment[];
 };
 
+const pluralize = (count: number, noun: string, suffix = "s") =>
+  capitalizeFirstLetter(`${noun}${count !== 1 ? suffix : ""}`);
+
+const capitalizeFirstLetter = (string: string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
+
+
 const Feeds: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -97,8 +104,6 @@ const Feeds: React.FC = () => {
 
       setData(post);
 
-      console.log(timeAgo(post[0].publishedAt));
-
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -169,8 +174,7 @@ const Feeds: React.FC = () => {
               <div className="mt-4 flex items-center gap-4 text-gray-500">
                 <p>6355 Likes</p>
                 <p>
-                  {post.comments.length} Comment
-                  {post.comments.length > 1 ? "s" : ""}
+                  {post.comments.length} {pluralize(post.comments.length, "comment")}
                 </p>
               </div>
             </div>
