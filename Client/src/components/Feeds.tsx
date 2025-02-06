@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
 
 import moment from "moment";
-
-type Post = {
-  id: string;
-  authorId: string;
-  title: string;
-  content: string;
-  photo: string;
-  published: boolean;
-  publishedAt: string;
-  comments: Comment[];
-};
+import { Post } from "src/types";
+import PostComment from "./posts/PostComment";
 
 const pluralize = (count: number, noun: string, suffix = "s") =>
   capitalizeFirstLetter(`${noun}${count !== 1 ? suffix : ""}`);
 
 const capitalizeFirstLetter = (string: string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
-
 
 const Feeds: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -34,14 +24,14 @@ const Feeds: React.FC = () => {
     } else {
       setShowLoadMore(false);
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', calculateScrollPage);
+    window.addEventListener("scroll", calculateScrollPage);
 
     return () => {
-      window.removeEventListener('scroll', calculateScrollPage);
-    }
+      window.removeEventListener("scroll", calculateScrollPage);
+    };
   }, []);
 
   const timeAgo = (date: string) => {
@@ -79,6 +69,7 @@ const Feeds: React.FC = () => {
                 published
                 publishedAt
                 comments {
+                  id
                   content
                   published
                   authorId
@@ -158,9 +149,9 @@ const Feeds: React.FC = () => {
                     <div className="flex gap-4">
                       <div className="mt-4 flex gap-2">
                         <img
-                          src={post.photo || "https://placehold.co/600x400"}
+                          src={post.photo || "https://placehold.co/700x400"}
                           alt="Post 1"
-                          className="w-full h-[500] rounded-md"
+                          className="w-full h-[200] rounded-md"
                         />
                       </div>
                     </div>
@@ -174,8 +165,17 @@ const Feeds: React.FC = () => {
               <div className="mt-4 flex items-center gap-4 text-gray-500">
                 <p>6355 Likes</p>
                 <p>
-                  {post.comments.length} {pluralize(post.comments.length, "comment")}
+                  {post.comments.length}{" "}
+                  {pluralize(post.comments.length, "comment")}
                 </p>
+                {/* show comments */}
+                <span className="text-blue-500">
+                  {post.comments.length ? "View comments" : ""}
+                </span>
+              </div>
+              {/* comments sections expanded */}
+              <div className="mt-4">
+                {post.comments.length && <PostComment postId={post.id} />}
               </div>
             </div>
           </div>
