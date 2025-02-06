@@ -48,22 +48,6 @@ export type CreatePostResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type CreateCommentResponse = {
-  __typename?: 'CreateCommentResponse';
-  code: Scalars['Int']['output'];
-  comment?: Maybe<Comment>;
-  message?: Maybe<Scalars['String']['output']>;
-  success: Scalars['Boolean']['output'];
-};
-
-export type CreatePostResponse = {
-  __typename?: 'CreatePostResponse';
-  code: Scalars['Int']['output'];
-  message?: Maybe<Scalars['String']['output']>;
-  post?: Maybe<Post>;
-  success: Scalars['Boolean']['output'];
-};
-
 export type CreateUserResponse = {
   __typename?: 'CreateUserResponse';
   code: Scalars['Int']['output'];

@@ -1,9 +1,52 @@
 import { useEffect, useState } from "react";
 
+import moment from "moment";
+
+type Post = {
+  id: string;
+  authorId: string;
+  title: string;
+  content: string;
+  photo: string;
+  published: boolean;
+  publishedAt: string;
+  comments: Comment[];
+};
+
 const Feeds: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Post[]>();
+  const [showLoadMore, setShowLoadMore] = useState(false);
+
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  const calculateScrollPage = () => {
+    if (scrollTop + clientHeight >= scrollHeight) {
+      setShowLoadMore(true);
+    } else {
+      setShowLoadMore(false);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', calculateScrollPage);
+
+    return () => {
+      window.removeEventListener('scroll', calculateScrollPage);
+    }
+  }, []);
+
+  const timeAgo = (date: string) => {
+    if (!date) return;
+
+    let finalDate = moment(Number.parseInt(date)).format("YYYY-MM-DD");
+
+    // if invalid date
+    if (!moment(finalDate).isValid()) return;
+
+    return moment(finalDate).fromNow();
+  };
 
   const getPosts = async () => {
     try {
@@ -15,32 +58,51 @@ const Feeds: React.FC = () => {
         },
         body: JSON.stringify({
           query: `
-            query {
-              posts {
+          query getPosts {
+            getPosts {
+              message
+              code
+              success
+              post {
+                content
                 id
                 title
-                content
-                image
+                photo
+                authorId
+                published
+                publishedAt
+                comments {
+                  content
+                  published
+                  authorId
+                }
               }
             }
+          }
+            
           `,
         }),
       });
-
-      console.log(posts.text());
 
       if (!posts.ok) {
         setError(true);
         setLoading(false);
       }
 
-      const postsData = await posts.json();
+      const {
+        data: {
+          getPosts: { post },
+        },
+      } = await posts.json();
 
-      setData(postsData);
+      setData(post);
+
+      console.log(timeAgo(post[0].publishedAt));
 
       setLoading(false);
     } catch (error) {
       console.error(error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -66,64 +128,68 @@ const Feeds: React.FC = () => {
 
   return (
     <section>
-      <div className="mb-8">
-        <div className="bg-white rounded-lg shadow p-5 mb-4">
-          <div className="flex items-start gap-4 text-black">
-            <div className="w-12 h-12 rounded-full bg-gray-300"></div>
-            <div>
-              <h4 className="text-lg font-semibold">George Lobko</h4>
-              <p className="text-gray-500 text-sm">2 hours ago</p>
-              <p className="mt-2 ">
-                Hi everyone, today I was on the most beautiful mountain in the
-                world! 😍
-              </p>
-              {/*  carousel image with dots */}
-              <div className="mt-4 relative">
-                <div className="flex gap-4">
-                  <div className="mt-4 flex gap-2">
-                    <img
-                      src="https://placehold.co/600x400?text=Hello+World"
-                      alt="Post 1"
-                      className="w-full h-[500] rounded-md"
-                    />
+      {data.length ? (
+        data.map((post) => (
+          <div className="mb-8" key={post.id}>
+            <div className="bg-white rounded-lg shadow p-5 mb-4">
+              <div className="flex items-start gap-4 text-black">
+                <img
+                  src={post.photo || "https://placehold.co/400x400"}
+                  alt="Post 1"
+                  className="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h4 className="text-lg font-semibold">{post.title}</h4>
+                  <p className="text-gray-500 text-sm">
+                    {timeAgo(post.publishedAt)}
+                  </p>
+                  <p className="mt-2 ">
+                    {post.content.length > 200
+                      ? `${post.content.slice(0, 200)}...`
+                      : post.content}
+                  </p>
+                  {/*  carousel image with dots */}
+                  <div className="mt-4 relative">
+                    <div className="flex gap-4">
+                      <div className="mt-4 flex gap-2">
+                        <img
+                          src={post.photo || "https://placehold.co/600x400"}
+                          alt="Post 1"
+                          className="w-full h-[500] rounded-md"
+                        />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 mt-2">
+                      <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                      <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                  <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                </div>
+              </div>
+              <div className="mt-4 flex items-center gap-4 text-gray-500">
+                <p>6355 Likes</p>
+                <p>
+                  {post.comments.length} Comment
+                  {post.comments.length > 1 ? "s" : ""}
+                </p>
               </div>
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-4 text-gray-500">
-            <p>6355 Likes</p>
-            <p>Comment</p>
-          </div>
+        ))
+      ) : (
+        <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
+          No posts found
         </div>
-      </div>
-      <div className="bg-white rounded-lg shadow p-6">
-        <div className="flex items-start gap-4 text-black">
-          <div className="w-12 h-12 rounded-full bg-gray-300"></div>
-          <div>
-            <h4 className="text-lg font-semibold">Vitaliy Boyko</h4>
-            <p className="text-gray-500 text-sm">3 hours ago</p>
-            <p className="mt-2">
-              I chose a wonderful coffee today. Latte with coconut! 🥥
-            </p>
-          </div>
-        </div>
-        <div className="mt-4 flex items-center gap-4 text-gray-500">
-          <p>6355 Likes</p>
-          <p>Comment</p>
-        </div>
-      </div>
+      )}
 
       {/* pagination load more */}
-      <div className="justify-center items-center fixed bottom-10 w-full left-0 right-0 flex">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-          Voir plus
-        </button>
-      </div>
+      {showLoadMore && (
+        <div className="justify-center items-center fixed bottom-10 w-full left-0 right-0 flex">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+            Voir plus
+          </button>
+        </div>
+      )}
     </section>
   );
 };
