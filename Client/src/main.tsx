@@ -27,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/profil" element={<Profil />} />
                         <Route path="/:id" element={<Posts />} />
+                        <Route path="*" element={<App />} />
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>
