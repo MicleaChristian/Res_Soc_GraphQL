@@ -124,7 +124,9 @@ export const typeDefs = gql`
     success: Boolean!
     message: String!
     token: String
+    user: UserClientObject
   }
+  
 
   type CreateUserResponse {
     code: Int!
