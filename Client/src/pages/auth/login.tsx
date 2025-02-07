@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useAuth } from "@components/auth/AuthContext"; // Import AuthContext
+import { useNavigate } from "react-router-dom"; // For navigation
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
+  const navigate = useNavigate(); // Initialize navigation hook
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -47,6 +49,10 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const handleNoAccount = () => {
+    navigate("/register"); // Navigate to the registration page
+  };
+
   return (
     <div className="page-container flex flex-col justify-center items-center">
       <div className="card">
@@ -69,6 +75,16 @@ const LoginPage: React.FC = () => {
           />
           <button type="submit">Login</button>
         </form>
+        <a
+          href="/register"
+          className="no-account-link"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNoAccount();
+          }}
+        >
+          No Account? Register Here
+        </a>
       </div>
     </div>
   );
