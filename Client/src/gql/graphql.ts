@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -14,209 +13,207 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
 };
 
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
-
-export type Character = {
-  __typename?: 'Character';
-  /** Time at which the character was created in the database. */
-  created: Maybe<Scalars['String']['output']>;
-  /** Episodes in which this character appeared. */
-  episode: Array<Maybe<Episode>>;
-  /** The gender of the character ('Female', 'Male', 'Genderless' or 'unknown'). */
-  gender: Maybe<Scalars['String']['output']>;
-  /** The id of the character. */
-  id: Maybe<Scalars['ID']['output']>;
-  /**
-   * Link to the character's image.
-   * All images are 300x300px and most are medium shots or portraits since they are intended to be used as avatars.
-   */
-  image: Maybe<Scalars['String']['output']>;
-  /** The character's last known location */
-  location: Maybe<Location>;
-  /** The name of the character. */
-  name: Maybe<Scalars['String']['output']>;
-  /** The character's origin location */
-  origin: Maybe<Location>;
-  /** The species of the character. */
-  species: Maybe<Scalars['String']['output']>;
-  /** The status of the character ('Alive', 'Dead' or 'unknown'). */
-  status: Maybe<Scalars['String']['output']>;
-  /** The type or subspecies of the character. */
-  type: Maybe<Scalars['String']['output']>;
+export type Comment = {
+  __typename?: 'Comment';
+  author: User;
+  authorId: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  photo: Maybe<Array<Maybe<Image>>>;
+  post: Post;
+  postId: Scalars['String']['output'];
+  published: Scalars['Boolean']['output'];
+  title: Scalars['String']['output'];
 };
 
-export type Characters = {
-  __typename?: 'Characters';
-  info: Maybe<Info>;
-  results: Maybe<Array<Maybe<Character>>>;
+export type CreateCommentResponse = {
+  __typename?: 'CreateCommentResponse';
+  code: Scalars['Int']['output'];
+  comment: Maybe<Comment>;
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
-export type Episode = {
-  __typename?: 'Episode';
-  /** The air date of the episode. */
-  air_date: Maybe<Scalars['String']['output']>;
-  /** List of characters who have been seen in the episode. */
-  characters: Array<Maybe<Character>>;
-  /** Time at which the episode was created in the database. */
-  created: Maybe<Scalars['String']['output']>;
-  /** The code of the episode. */
-  episode: Maybe<Scalars['String']['output']>;
-  /** The id of the episode. */
-  id: Maybe<Scalars['ID']['output']>;
-  /** The name of the episode. */
-  name: Maybe<Scalars['String']['output']>;
+export type CreatePostResponse = {
+  __typename?: 'CreatePostResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  post: Maybe<Post>;
+  success: Scalars['Boolean']['output'];
 };
 
-export type Episodes = {
-  __typename?: 'Episodes';
-  info: Maybe<Info>;
-  results: Maybe<Array<Maybe<Episode>>>;
+export type CreateReactionResponse = {
+  __typename?: 'CreateReactionResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  reaction: Maybe<Reaction>;
+  success: Scalars['Boolean']['output'];
 };
 
-export type FilterCharacter = {
-  gender: InputMaybe<Scalars['String']['input']>;
-  name: InputMaybe<Scalars['String']['input']>;
-  species: InputMaybe<Scalars['String']['input']>;
-  status: InputMaybe<Scalars['String']['input']>;
-  type: InputMaybe<Scalars['String']['input']>;
+export type CreateUserResponse = {
+  __typename?: 'CreateUserResponse';
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+  user: Maybe<UserClientObject>;
 };
 
-export type FilterEpisode = {
-  episode: InputMaybe<Scalars['String']['input']>;
-  name: InputMaybe<Scalars['String']['input']>;
+export type Image = {
+  __typename?: 'Image';
+  comment: Maybe<Comment>;
+  commentId: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  post: Maybe<Post>;
+  postId: Maybe<Scalars['String']['output']>;
+  url: Scalars['String']['output'];
+  user: Maybe<User>;
+  userId: Maybe<Scalars['String']['output']>;
 };
 
-export type FilterLocation = {
-  dimension: InputMaybe<Scalars['String']['input']>;
-  name: InputMaybe<Scalars['String']['input']>;
-  type: InputMaybe<Scalars['String']['input']>;
+export type Mutation = {
+  __typename?: 'Mutation';
+  createComment: Maybe<CreateCommentResponse>;
+  createPost: Maybe<CreatePostResponse>;
+  createReactionForPost: Maybe<CreateReactionResponse>;
+  createUser: Maybe<CreateUserResponse>;
+  signIn: Maybe<SignInUserResponse>;
 };
 
-export type Info = {
-  __typename?: 'Info';
-  /** The length of the response. */
-  count: Maybe<Scalars['Int']['output']>;
-  /** Number of the next page (if it exists) */
-  next: Maybe<Scalars['Int']['output']>;
-  /** The amount of pages. */
-  pages: Maybe<Scalars['Int']['output']>;
-  /** Number of the previous page (if it exists) */
-  prev: Maybe<Scalars['Int']['output']>;
+
+export type MutationCreateCommentArgs = {
+  authorId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  postId: Scalars['ID']['input'];
+  title: Scalars['String']['input'];
 };
 
-export type Location = {
-  __typename?: 'Location';
-  /** Time at which the location was created in the database. */
-  created: Maybe<Scalars['String']['output']>;
-  /** The dimension in which the location is located. */
-  dimension: Maybe<Scalars['String']['output']>;
-  /** The id of the location. */
-  id: Maybe<Scalars['ID']['output']>;
-  /** The name of the location. */
-  name: Maybe<Scalars['String']['output']>;
-  /** List of characters who have been last seen in the location. */
-  residents: Array<Maybe<Character>>;
-  /** The type of the location. */
-  type: Maybe<Scalars['String']['output']>;
+
+export type MutationCreatePostArgs = {
+  authorId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  title: Scalars['String']['input'];
 };
 
-export type Locations = {
-  __typename?: 'Locations';
-  info: Maybe<Info>;
-  results: Maybe<Array<Maybe<Location>>>;
+
+export type MutationCreateReactionForPostArgs = {
+  postId: Scalars['ID']['input'];
+  reactionName: ReactionStateEnum;
+  userId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateUserArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
+export type MutationSignInArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type Post = {
+  __typename?: 'Post';
+  authorId: Scalars['ID']['output'];
+  comments: Maybe<Array<Maybe<Comment>>>;
+  content: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  photo: Maybe<Scalars['String']['output']>;
+  published: Scalars['Boolean']['output'];
+  publishedAt: Scalars['String']['output'];
+  title: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  /** Get a specific character by ID */
-  character: Maybe<Character>;
-  /** Get the list of all characters */
-  characters: Maybe<Characters>;
-  /** Get a list of characters selected by ids */
-  charactersByIds: Maybe<Array<Maybe<Character>>>;
-  /** Get a specific episode by ID */
-  episode: Maybe<Episode>;
-  /** Get the list of all episodes */
-  episodes: Maybe<Episodes>;
-  /** Get a list of episodes selected by ids */
-  episodesByIds: Maybe<Array<Maybe<Episode>>>;
-  /** Get a specific locations by ID */
-  location: Maybe<Location>;
-  /** Get the list of all locations */
-  locations: Maybe<Locations>;
-  /** Get a list of locations selected by ids */
-  locationsByIds: Maybe<Array<Maybe<Location>>>;
+  getCommentsByPost: Maybe<GetCommentsByPostResponse>;
+  getPostById: Maybe<GetPostByIdResponse>;
+  getPosts: Maybe<GetPostsResponse>;
+  getUsers: Maybe<GetUsersResponse>;
 };
 
 
-export type QueryCharacterArgs = {
+export type QueryGetCommentsByPostArgs = {
+  postId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetPostByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
-
-export type QueryCharactersArgs = {
-  filter: InputMaybe<FilterCharacter>;
-  page: InputMaybe<Scalars['Int']['input']>;
+export type Reaction = {
+  __typename?: 'Reaction';
+  comment: Maybe<Comment>;
+  commentId: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  post: Maybe<Post>;
+  postId: Maybe<Scalars['String']['output']>;
+  reactionName: ReactionStateEnum;
+  user: User;
+  userId: Scalars['String']['output'];
 };
 
+export enum ReactionStateEnum {
+  Dislike = 'DISLIKE',
+  Heart = 'HEART',
+  Laugh = 'LAUGH',
+  Like = 'LIKE',
+  Smile = 'SMILE'
+}
 
-export type QueryCharactersByIdsArgs = {
-  ids: Array<Scalars['ID']['input']>;
+export type SignInUserResponse = {
+  __typename?: 'SignInUserResponse';
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+  token: Maybe<Scalars['String']['output']>;
 };
 
-
-export type QueryEpisodeArgs = {
-  id: Scalars['ID']['input'];
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  password: Scalars['String']['output'];
 };
 
-
-export type QueryEpisodesArgs = {
-  filter: InputMaybe<FilterEpisode>;
-  page: InputMaybe<Scalars['Int']['input']>;
+export type UserClientObject = {
+  __typename?: 'UserClientObject';
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
 };
 
-
-export type QueryEpisodesByIdsArgs = {
-  ids: Array<Scalars['ID']['input']>;
+export type GetCommentsByPostResponse = {
+  __typename?: 'getCommentsByPostResponse';
+  code: Scalars['Int']['output'];
+  comment: Maybe<Array<Maybe<Comment>>>;
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
-
-export type QueryLocationArgs = {
-  id: Scalars['ID']['input'];
+export type GetPostByIdResponse = {
+  __typename?: 'getPostByIdResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  post: Maybe<Post>;
+  success: Scalars['Boolean']['output'];
 };
 
-
-export type QueryLocationsArgs = {
-  filter: InputMaybe<FilterLocation>;
-  page: InputMaybe<Scalars['Int']['input']>;
+export type GetPostsResponse = {
+  __typename?: 'getPostsResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  post: Maybe<Array<Maybe<Post>>>;
+  success: Scalars['Boolean']['output'];
 };
 
-
-export type QueryLocationsByIdsArgs = {
-  ids: Array<Scalars['ID']['input']>;
+export type GetUsersResponse = {
+  __typename?: 'getUsersResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+  users: Maybe<Array<Maybe<UserClientObject>>>;
 };
-
-export type GetCharactersQueryVariables = Exact<{
-  page: InputMaybe<Scalars['Int']['input']>;
-}>;
-
-
-export type GetCharactersQuery = { __typename?: 'Query', characters: { __typename?: 'Characters', info: { __typename?: 'Info', next: number | null } | null, results: Array<{ __typename?: 'Character', id: string | null, name: string | null, image: string | null } | null> | null } | null };
-
-export type GetCharacterQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type GetCharacterQuery = { __typename?: 'Query', character: { __typename?: 'Character', id: string | null, name: string | null, image: string | null, status: string | null, type: string | null, gender: string | null } | null };
-
-
-export const GetCharactersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCharacters"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"page"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"characters"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"Variable","name":{"kind":"Name","value":"page"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"info"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"next"}}]}},{"kind":"Field","name":{"kind":"Name","value":"results"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]}}]} as unknown as DocumentNode<GetCharactersQuery, GetCharactersQueryVariables>;
-export const GetCharacterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCharacter"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"character"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}}]}}]}}]} as unknown as DocumentNode<GetCharacterQuery, GetCharacterQueryVariables>;

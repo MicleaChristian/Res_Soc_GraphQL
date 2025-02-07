@@ -12,7 +12,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.12.9",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@graphql-codegen/cli": "^5.0.4",
+    "@mui/icons-material": "^6.4.3",
+    "@mui/material": "^6.4.3",
     "@parcel/watcher": "^2.5.1",
     "@tailwindcss/vite": "^4.0.3",
     "graphql": "^16.10.0",
