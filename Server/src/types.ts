@@ -186,6 +186,7 @@ export type Post = {
   photo?: Maybe<Scalars['String']['output']>;
   published: Scalars['Boolean']['output'];
   publishedAt: Scalars['String']['output'];
+  reactions?: Maybe<Array<Maybe<ReactionForPost>>>;
   title: Scalars['String']['output'];
 };
 
@@ -581,6 +582,7 @@ export type PostResolvers<ContextType = DataSourceContext, ParentType extends Re
   photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   publishedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  reactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ReactionForPost']>>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

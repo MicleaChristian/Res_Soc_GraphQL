@@ -5,6 +5,7 @@ import {getUser} from '../../modules/auth.js'
 
 export const createComment: MutationResolvers['createComment'] = async (_, {title, content, authorId, postId,token}, context) => {
     try {
+      
       const authenticatedUser = getUser(token);
         if(!authenticatedUser){
           return {

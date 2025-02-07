@@ -5,6 +5,7 @@ import {getUser} from '../../../modules/auth.js'
 
 export const createImageForPost: MutationResolvers['createImageForPost'] = async (_, {url, postId,token}, context) => {
     try {
+      
       const authenticatedUser = getUser(token);
         if(!authenticatedUser){
           return {

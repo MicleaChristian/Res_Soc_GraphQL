@@ -155,6 +155,7 @@ type Post {
   publishedAt: String!
   photo: String
   comments: [Comment]
+  reactions: [ReactionForPost]
 }
 
   type Comment {

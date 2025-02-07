@@ -1,7 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { MutationResolvers } from "../../types.js";
 import {getUser} from '../../modules/auth.js'
-import { Token } from "graphql";
 
 export const createPost: MutationResolvers['createPost'] = async (_, {title, content, authorId,token}, context) => {
     try {
