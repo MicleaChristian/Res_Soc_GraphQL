@@ -88,6 +88,14 @@ export type CreateUserResponse = {
   user?: Maybe<UserClientObject>;
 };
 
+export type DeleteCommentResponse = {
+  __typename?: 'DeleteCommentResponse';
+  code: Scalars['Int']['output'];
+  comment?: Maybe<Comment>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type GetUserReactionForAllCommentsInAPostResponse = {
   __typename?: 'GetUserReactionForAllCommentsInAPostResponse';
   code: Scalars['Int']['output'];
@@ -117,6 +125,7 @@ export type Mutation = {
   createReactionForComment?: Maybe<CreateReactionForCommentResponse>;
   createReactionForPost?: Maybe<CreateReactionForPostResponse>;
   createUser?: Maybe<CreateUserResponse>;
+  deleteComment?: Maybe<DeleteCommentResponse>;
   signIn?: Maybe<SignInUserResponse>;
 };
 
@@ -169,6 +178,12 @@ export type MutationCreateReactionForPostArgs = {
 export type MutationCreateUserArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
 };
 
 
@@ -417,6 +432,7 @@ export type ResolversTypes = {
   CreateReactionForCommentResponse: ResolverTypeWrapper<CreateReactionForCommentResponse>;
   CreateReactionForPostResponse: ResolverTypeWrapper<CreateReactionForPostResponse>;
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
+  DeleteCommentResponse: ResolverTypeWrapper<Omit<DeleteCommentResponse, 'comment'> & { comment?: Maybe<ResolversTypes['Comment']> }>;
   GetUserReactionForAllCommentsInAPostResponse: ResolverTypeWrapper<Omit<GetUserReactionForAllCommentsInAPostResponse, 'reactions'> & { reactions?: Maybe<Array<Maybe<ResolversTypes['ReactionForComment']>>> }>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Image: ResolverTypeWrapper<ImageModel>;
@@ -452,6 +468,7 @@ export type ResolversParentTypes = {
   CreateReactionForCommentResponse: CreateReactionForCommentResponse;
   CreateReactionForPostResponse: CreateReactionForPostResponse;
   CreateUserResponse: CreateUserResponse;
+  DeleteCommentResponse: Omit<DeleteCommentResponse, 'comment'> & { comment?: Maybe<ResolversParentTypes['Comment']> };
   GetUserReactionForAllCommentsInAPostResponse: Omit<GetUserReactionForAllCommentsInAPostResponse, 'reactions'> & { reactions?: Maybe<Array<Maybe<ResolversParentTypes['ReactionForComment']>>> };
   ID: Scalars['ID']['output'];
   Image: ImageModel;
@@ -543,6 +560,14 @@ export type CreateUserResponseResolvers<ContextType = DataSourceContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DeleteCommentResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['DeleteCommentResponse'] = ResolversParentTypes['DeleteCommentResponse']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type GetUserReactionForAllCommentsInAPostResponseResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['GetUserReactionForAllCommentsInAPostResponse'] = ResolversParentTypes['GetUserReactionForAllCommentsInAPostResponse']> = {
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -571,6 +596,7 @@ export type MutationResolvers<ContextType = DataSourceContext, ParentType extend
   createReactionForComment?: Resolver<Maybe<ResolversTypes['CreateReactionForCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForCommentArgs, 'commentId' | 'reactionName' | 'userId'>>;
   createReactionForPost?: Resolver<Maybe<ResolversTypes['CreateReactionForPostResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForPostArgs, 'postId' | 'reactionName' | 'userId'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;
+  deleteComment?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id' | 'token'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInUserResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
 };
 
@@ -703,6 +729,7 @@ export type Resolvers<ContextType = DataSourceContext> = {
   CreateReactionForCommentResponse?: CreateReactionForCommentResponseResolvers<ContextType>;
   CreateReactionForPostResponse?: CreateReactionForPostResponseResolvers<ContextType>;
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
+  DeleteCommentResponse?: DeleteCommentResponseResolvers<ContextType>;
   GetUserReactionForAllCommentsInAPostResponse?: GetUserReactionForAllCommentsInAPostResponseResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

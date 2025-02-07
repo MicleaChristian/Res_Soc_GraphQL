@@ -8,6 +8,7 @@ import { getPostById } from "./queries/posts/getPostById.js";
 import { getPosts } from "./queries/posts/getPosts.js";
 import { getCommentsByPost } from "./queries/comments/getCommentsByPost.js";
 import { createComment } from "./mutations/comments/createdComment.js";
+import { deleteComment } from "./mutations/comments/deleteComment.js";
 import { Resolvers } from "./types.js";
 import {comments} from "./queries/posts/subQuerries/postComment.js";
 import {post} from "./queries/comments/subQueries/commentPost.js";
@@ -47,6 +48,7 @@ export const resolvers: Resolvers = {
     createReactionForPost,
     createReactionForComment,
     createImageForPost,
-    createImageForComment
+    createImageForComment,
+    deleteComment,
   },
 };

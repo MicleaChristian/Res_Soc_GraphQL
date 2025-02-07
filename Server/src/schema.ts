@@ -22,6 +22,7 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): SignInUserResponse
     createPost(title: String!, content: String!, authorId: ID!,token: String!) : CreatePostResponse
     createComment(title: String!, content: String!, authorId: ID!, postId: ID!,token: String!) : CreateCommentResponse
+    deleteComment(id: ID!, token: String!) : DeleteCommentResponse
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
     createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
     createImageForPost(url: String!, postId: ID!,token: String!) : CreateImageForPostResponse
@@ -85,6 +86,13 @@ export const typeDefs = gql`
   }
 
   type CreateCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    comment: Comment
+  }
+
+  type DeleteCommentResponse {
     code: Int!
     success: Boolean!
     message: String
