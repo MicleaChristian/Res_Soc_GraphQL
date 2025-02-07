@@ -25,6 +25,7 @@ export const typeDefs = gql`
     deleteComment(id: ID!, token: String!) : DeleteCommentResponse
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
     createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
+    deleteReactionByPost(id: ID!, token: String!) : DeleteCommentResponse
     createImageForPost(url: String!, postId: ID!,token: String!) : CreateImageForPostResponse
     createImageForComment(url: String!, commentId: ID!,token: String!) : CreateImageForCommentResponse
   }

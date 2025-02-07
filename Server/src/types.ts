@@ -126,6 +126,7 @@ export type Mutation = {
   createReactionForPost?: Maybe<CreateReactionForPostResponse>;
   createUser?: Maybe<CreateUserResponse>;
   deleteComment?: Maybe<DeleteCommentResponse>;
+  deleteReactionByPost?: Maybe<DeleteCommentResponse>;
   signIn?: Maybe<SignInUserResponse>;
 };
 
@@ -182,6 +183,12 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteReactionByPostArgs = {
   id: Scalars['ID']['input'];
   token: Scalars['String']['input'];
 };
@@ -593,6 +600,7 @@ export type MutationResolvers<ContextType = DataSourceContext, ParentType extend
   createReactionForPost?: Resolver<Maybe<ResolversTypes['CreateReactionForPostResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForPostArgs, 'postId' | 'reactionName' | 'userId'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;
   deleteComment?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'id' | 'token'>>;
+  deleteReactionByPost?: Resolver<Maybe<ResolversTypes['DeleteCommentResponse']>, ParentType, ContextType, RequireFields<MutationDeleteReactionByPostArgs, 'id' | 'token'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SignInUserResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
 };
 

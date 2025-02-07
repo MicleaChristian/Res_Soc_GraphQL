@@ -14,6 +14,7 @@ import {comments} from "./queries/posts/subQuerries/postComment.js";
 import {post} from "./queries/comments/subQueries/commentPost.js";
 import {reactions as reactionPost} from "./queries/posts/subQuerries/reactionPost.js";
 import {createReactionForComment} from "./mutations/reactions/createReactionForComment.js";
+import { deleteReactionByPost } from "./mutations/reactions/deleteReactionByPost.js";
 import {createImageForPost} from "./mutations/images/imagePosts/createImageForPost.js";
 import {createImageForComment} from "./mutations/images/imageComments/createImageForComment.js";
 import {getUserReactionByPost} from "./queries/reactions/getUserReactionByPost.js"
@@ -48,5 +49,6 @@ export const resolvers: Resolvers = {
     createImageForPost,
     createImageForComment,
     deleteComment,
+    deleteReactionByPost,
   },
 };
