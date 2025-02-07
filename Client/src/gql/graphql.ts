@@ -36,6 +36,22 @@ export type CreateCommentResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type CreateImageForCommentResponse = {
+  __typename?: 'CreateImageForCommentResponse';
+  code: Scalars['Int']['output'];
+  image: Maybe<Image>;
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type CreateImageForPostResponse = {
+  __typename?: 'CreateImageForPostResponse';
+  code: Scalars['Int']['output'];
+  image: Maybe<Image>;
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreatePostResponse = {
   __typename?: 'CreatePostResponse';
   code: Scalars['Int']['output'];
@@ -44,11 +60,19 @@ export type CreatePostResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type CreateReactionResponse = {
-  __typename?: 'CreateReactionResponse';
+export type CreateReactionForCommentResponse = {
+  __typename?: 'CreateReactionForCommentResponse';
   code: Scalars['Int']['output'];
   message: Maybe<Scalars['String']['output']>;
-  reaction: Maybe<Reaction>;
+  reaction: Maybe<ReactionForCommentClientResponse>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type CreateReactionForPostResponse = {
+  __typename?: 'CreateReactionForPostResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  reaction: Maybe<ReactionForPostClientResponse>;
   success: Scalars['Boolean']['output'];
 };
 
@@ -58,6 +82,14 @@ export type CreateUserResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
   user: Maybe<UserClientObject>;
+};
+
+export type GetUserReactionForAllCommentsInAPostResponse = {
+  __typename?: 'GetUserReactionForAllCommentsInAPostResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  reactions: Maybe<Array<Maybe<ReactionForComment>>>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type Image = {
@@ -75,8 +107,11 @@ export type Image = {
 export type Mutation = {
   __typename?: 'Mutation';
   createComment: Maybe<CreateCommentResponse>;
+  createImageForComment: Maybe<CreateImageForCommentResponse>;
+  createImageForPost: Maybe<CreateImageForPostResponse>;
   createPost: Maybe<CreatePostResponse>;
-  createReactionForPost: Maybe<CreateReactionResponse>;
+  createReactionForComment: Maybe<CreateReactionForCommentResponse>;
+  createReactionForPost: Maybe<CreateReactionForPostResponse>;
   createUser: Maybe<CreateUserResponse>;
   signIn: Maybe<SignInUserResponse>;
 };
@@ -90,6 +125,18 @@ export type MutationCreateCommentArgs = {
 };
 
 
+export type MutationCreateImageForCommentArgs = {
+  commentId: Scalars['ID']['input'];
+  url: Scalars['String']['input'];
+};
+
+
+export type MutationCreateImageForPostArgs = {
+  postId: Scalars['ID']['input'];
+  url: Scalars['String']['input'];
+};
+
+
 export type MutationCreatePostArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
@@ -97,9 +144,16 @@ export type MutationCreatePostArgs = {
 };
 
 
+export type MutationCreateReactionForCommentArgs = {
+  commentId: Scalars['ID']['input'];
+  reactionName: ReactionPostStateEnum;
+  userId: Scalars['ID']['input'];
+};
+
+
 export type MutationCreateReactionForPostArgs = {
   postId: Scalars['ID']['input'];
-  reactionName: ReactionStateEnum;
+  reactionName: ReactionPostStateEnum;
   userId: Scalars['ID']['input'];
 };
 
@@ -132,6 +186,8 @@ export type Query = {
   getCommentsByPost: Maybe<GetCommentsByPostResponse>;
   getPostById: Maybe<GetPostByIdResponse>;
   getPosts: Maybe<GetPostsResponse>;
+  getUserReactionByPost: Maybe<GetUserReactionByPostResponse>;
+  getUserReactionForAllCommentsInAPost: Maybe<GetUserReactionForAllCommentsInAPostResponse>;
   getUsers: Maybe<GetUsersResponse>;
 };
 
@@ -145,19 +201,64 @@ export type QueryGetPostByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
-export type Reaction = {
-  __typename?: 'Reaction';
-  comment: Maybe<Comment>;
-  commentId: Maybe<Scalars['String']['output']>;
+
+export type QueryGetUserReactionByPostArgs = {
+  postId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUserReactionForAllCommentsInAPostArgs = {
+  commentId: Scalars['ID']['input'];
+  postId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+export enum ReactionCommentStateEnum {
+  Dislike = 'DISLIKE',
+  Heart = 'HEART',
+  Laugh = 'LAUGH',
+  Like = 'LIKE',
+  Smile = 'SMILE'
+}
+
+export type ReactionForComment = {
+  __typename?: 'ReactionForComment';
+  comment: Comment;
+  commentId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  post: Maybe<Post>;
-  postId: Maybe<Scalars['String']['output']>;
-  reactionName: ReactionStateEnum;
+  reactionName: ReactionCommentStateEnum;
   user: User;
   userId: Scalars['String']['output'];
 };
 
-export enum ReactionStateEnum {
+export type ReactionForCommentClientResponse = {
+  __typename?: 'ReactionForCommentClientResponse';
+  commentId: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  reactionName: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
+export type ReactionForPost = {
+  __typename?: 'ReactionForPost';
+  id: Scalars['ID']['output'];
+  post: Post;
+  postId: Scalars['String']['output'];
+  reactionName: ReactionPostStateEnum;
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
+export type ReactionForPostClientResponse = {
+  __typename?: 'ReactionForPostClientResponse';
+  id: Scalars['ID']['output'];
+  postId: Scalars['String']['output'];
+  reactionName: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
+export enum ReactionPostStateEnum {
   Dislike = 'DISLIKE',
   Heart = 'HEART',
   Laugh = 'LAUGH',
@@ -207,6 +308,14 @@ export type GetPostsResponse = {
   code: Scalars['Int']['output'];
   message: Maybe<Scalars['String']['output']>;
   post: Maybe<Array<Maybe<Post>>>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type GetUserReactionByPostResponse = {
+  __typename?: 'getUserReactionByPostResponse';
+  code: Scalars['Int']['output'];
+  message: Maybe<Scalars['String']['output']>;
+  reaction: Maybe<ReactionForPostClientResponse>;
   success: Scalars['Boolean']['output'];
 };
 
