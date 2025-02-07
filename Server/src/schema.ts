@@ -6,6 +6,8 @@ export const typeDefs = gql`
     getPostById(id: ID!): getPostByIdResponse
     getCommentsByPost(postId: ID!): getCommentsByPostResponse
     getUsers: getUsersResponse
+    getUserReactionByPost(userId: ID!, postId: ID!) : getUserReactionByPostResponse
+    getUserReactionForAllCommentsInAPost(userId: ID!, commentId: ID!, postId: ID!) : GetUserReactionForAllCommentsInAPostResponse
   }
 
   type getUsersResponse {
@@ -20,14 +22,59 @@ export const typeDefs = gql`
     signIn(email: String!, password: String!): SignInUserResponse
     createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
     createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
-    createReactionForPost(reactionName: ReactionStateEnum!, userId: ID!, postId: ID!) : CreateReactionResponse
+    createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
+    createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
+    createImageForPost(url: String!, postId: ID!) : CreateImageForPostResponse
+    createImageForComment(url: String!, commentId: ID!) : CreateImageForCommentResponse
   }
 
-  type CreateReactionResponse {
+  type GetUserReactionForAllCommentsInAPostResponse {
     code: Int!
     success: Boolean!
     message: String
-    reaction: Reaction
+    reactions: [ReactionForComment]
+  }
+
+  type getUserReactionByPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: ReactionForPostClientResponse
+  }
+
+  type CreateImageForCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    image: Image
+  }
+
+  type CreateImageForPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    image: Image
+  }
+  
+  type CreateReactionForCommentResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: ReactionForCommentClientResponse
+  }
+  
+  type ReactionForCommentClientResponse {
+    id: ID!
+    reactionName: String!
+    userId: String!
+    commentId: String!
+  }
+
+  type CreateReactionForPostResponse {
+    code: Int!
+    success: Boolean!
+    message: String
+    reaction: ReactionForPostClientResponse
   }
 
   type CreatePostResponse {
@@ -130,19 +177,41 @@ type Post {
     commentId: String
     comment: Comment
   }
-
-  type Reaction {
+  
+  type ReactionForPostClientResponse {
     id: ID!
-    reactionName: ReactionStateEnum!
+    reactionName: String!
+    userId: String!
+    postId: String!
+  }
+
+  type ReactionForPost {
+    id: ID!
+    reactionName: ReactionPostStateEnum!
     user: User!
     userId: String!
-    postId: String
-    post: Post
-    commentId: String
-    comment: Comment
+    postId: String!
+    post: Post!
   }
   
-  enum ReactionStateEnum {
+  type ReactionForComment {
+    id: ID!
+    reactionName: ReactionCommentStateEnum!
+    user: User!
+    userId: String!
+    commentId: String!
+    comment: Comment!
+  }
+
+  enum ReactionCommentStateEnum {
+    LIKE
+    HEART
+    LAUGH
+    SMILE
+    DISLIKE
+  }
+  
+  enum ReactionPostStateEnum {
     LIKE
     HEART
     LAUGH

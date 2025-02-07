@@ -17,7 +17,9 @@ model User {
   post     Post[] @relation("userPostRelation")
   comment  Comment[] @relation("userCommentRelation")
   photo    Image[] @relation("userPhotoRelation")
-  reaction  Reaction[] @relation("userReactionRelation")
+  reactionForPost  ReactionForPost[] @relation("userReactionForPostRelation")
+  reactionForComment  ReactionForComment[] @relation("userReactionForCommentRelation")
+  
 }
 
 model Post {
@@ -30,7 +32,7 @@ model Post {
   photo       Image[] @relation("postImageRelation")
   comments    Comment[] @relation("postCommentRelation")
   publishedAt DateTime  @default(now())
-  reaction  Reaction[]  @relation("postReactionRelation")
+  reaction  ReactionForPost[]  @relation("postReactionRelation")
 }
 
 model Comment {
@@ -44,7 +46,7 @@ model Comment {
   post        Post     @relation("postCommentRelation",fields: [postId], references: [id])
   photo       Image[]   @relation("commentImageRelation")
   publishedAt DateTime @default(now())
-  reaction  Reaction[]  @relation("commentReactionRelation")
+  reaction  ReactionForComment[]  @relation("commentReactionRelation")
 }
 
 model Image {
@@ -59,19 +61,35 @@ model Image {
   publishedAt DateTime @default(now())
 }
 
-model Reaction {
+model ReactionForPost {
   id String @id @unique @default(uuid())
-  reactionName ReactionStateEnum
+  reactionName ReactionPostStateEnum
   userId     String
-  user User @relation("userReactionRelation",fields: [userId], references: [id])
-  postId     String?
-  post Post? @relation("postReactionRelation",fields: [postId], references: [id])
-  commentId String?
-  comment Comment? @relation("commentReactionRelation",fields: [commentId], references: [id])
+  user User @relation("userReactionForPostRelation",fields: [userId], references: [id])
+  postId   String
+  post Post @relation("postReactionRelation",fields: [postId], references: [id])
   createdAt DateTime @default(now())
 }
 
-enum ReactionStateEnum {
+model ReactionForComment {
+  id String @id @unique @default(uuid())
+  reactionName ReactionCommentStateEnum
+  userId     String
+  user User @relation("userReactionForCommentRelation",fields: [userId], references: [id])
+  commentId String
+  comment Comment @relation("commentReactionRelation",fields: [commentId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum ReactionPostStateEnum {
+  LIKE
+  HEART
+  LAUGH
+  SMILE
+  DISLIKE
+}
+
+enum ReactionCommentStateEnum {
   LIKE
   HEART
   LAUGH
