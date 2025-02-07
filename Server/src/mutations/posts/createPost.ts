@@ -1,8 +1,18 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { MutationResolvers } from "../../types.js";
+import {getUser} from '../../modules/auth.js'
 
-export const createPost: MutationResolvers['createPost'] = async (_, {title, content, authorId}, context) => {
+export const createPost: MutationResolvers['createPost'] = async (_, {title, content, authorId,token}, context) => {
     try {
+      const authenticatedUser = getUser(token);
+      if(!authenticatedUser){
+        return {
+          code: 401,
+          message: "User not signed in",
+          success:false,
+          post: null
+      }
+      }
       const createdPost = await context.dataSources.db.post.create({
         data: {
           title,
