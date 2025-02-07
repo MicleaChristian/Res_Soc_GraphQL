@@ -122,17 +122,20 @@ export type MutationCreateCommentArgs = {
   content: Scalars['String']['input'];
   postId: Scalars['ID']['input'];
   title: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 
 export type MutationCreateImageForCommentArgs = {
   commentId: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
 
 export type MutationCreateImageForPostArgs = {
   postId: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -141,6 +144,7 @@ export type MutationCreatePostArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   title: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 
@@ -178,6 +182,7 @@ export type Post = {
   photo: Maybe<Scalars['String']['output']>;
   published: Scalars['Boolean']['output'];
   publishedAt: Scalars['String']['output'];
+  reactions: Maybe<Array<Maybe<ReactionForPost>>>;
   title: Scalars['String']['output'];
 };
 
@@ -272,6 +277,7 @@ export type SignInUserResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
   token: Maybe<Scalars['String']['output']>;
+  user: Maybe<UserClientObject>;
 };
 
 export type User = {

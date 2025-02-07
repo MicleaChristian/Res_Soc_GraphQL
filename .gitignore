@@ -4,4 +4,3 @@ Client/dist/
 dev.db
 prisma/dev.db
 Server/prisma/dev.db
-Server/prisma/dev.db
