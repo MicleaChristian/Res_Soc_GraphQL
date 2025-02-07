@@ -229,11 +229,9 @@ export enum ReactionCommentStateEnum {
 
 export type ReactionForComment = {
   __typename?: 'ReactionForComment';
-  comment: Comment;
   commentId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  reactionName: ReactionCommentStateEnum;
-  user: User;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -248,10 +246,8 @@ export type ReactionForCommentClientResponse = {
 export type ReactionForPost = {
   __typename?: 'ReactionForPost';
   id: Scalars['ID']['output'];
-  post: Post;
   postId: Scalars['String']['output'];
-  reactionName: ReactionPostStateEnum;
-  user: User;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 

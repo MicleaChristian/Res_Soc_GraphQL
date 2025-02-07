@@ -198,20 +198,16 @@ type Post {
 
   type ReactionForPost {
     id: ID!
-    reactionName: ReactionPostStateEnum!
-    user: User!
+    reactionName: String!
     userId: String!
     postId: String!
-    post: Post!
   }
   
   type ReactionForComment {
     id: ID!
-    reactionName: ReactionCommentStateEnum!
-    user: User!
+    reactionName: String!
     userId: String!
     commentId: String!
-    comment: Comment!
   }
 
   enum ReactionCommentStateEnum {

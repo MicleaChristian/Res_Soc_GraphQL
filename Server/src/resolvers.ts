@@ -12,7 +12,7 @@ import { deleteComment } from "./mutations/comments/deleteComment.js";
 import { Resolvers } from "./types.js";
 import {comments} from "./queries/posts/subQuerries/postComment.js";
 import {post} from "./queries/comments/subQueries/commentPost.js";
-import {post as reactionPost} from "./queries/reactions/subQueries/reactionPost.js";
+import {reactions as reactionPost} from "./queries/posts/subQuerries/reactionPost.js";
 import {createReactionForComment} from "./mutations/reactions/createReactionForComment.js";
 import {createImageForPost} from "./mutations/images/imagePosts/createImageForPost.js";
 import {createImageForComment} from "./mutations/images/imageComments/createImageForComment.js";
@@ -22,13 +22,11 @@ import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserR
 export const resolvers: Resolvers = {
   Post: {
     comments,
+    reactions:reactionPost
   },
   // find the post that 
   Comment: {
     post
-  },
-  ReactionForPost: {
-    post: reactionPost,
   },
   Query: {
     getUsers,

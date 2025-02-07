@@ -32,7 +32,7 @@ model Post {
   photo       Image[] @relation("postImageRelation")
   comments    Comment[] @relation("postCommentRelation")
   publishedAt DateTime  @default(now())
-  reaction  ReactionForPost[]  @relation("postReactionRelation")
+  reactions  ReactionForPost[]  @relation("postReactionRelation")
 }
 
 model Comment {

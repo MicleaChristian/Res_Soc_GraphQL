@@ -2,6 +2,7 @@ import { MutationResolvers } from "../../types.js";
 
 export const createReactionForPost: MutationResolvers['createReactionForPost'] = async (parent, {reactionName, userId, postId}, context) => {
     try {
+      
       const createdReaction = await context.dataSources.db.reactionForPost.create({
         data: {
           reactionName,

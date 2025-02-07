@@ -248,11 +248,9 @@ export enum ReactionCommentStateEnum {
 
 export type ReactionForComment = {
   __typename?: 'ReactionForComment';
-  comment: Comment;
   commentId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  reactionName: ReactionCommentStateEnum;
-  user: User;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -267,10 +265,8 @@ export type ReactionForCommentClientResponse = {
 export type ReactionForPost = {
   __typename?: 'ReactionForPost';
   id: Scalars['ID']['output'];
-  post: Post;
   postId: Scalars['String']['output'];
-  reactionName: ReactionPostStateEnum;
-  user: User;
+  reactionName: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -441,9 +437,9 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<PostModel>;
   Query: ResolverTypeWrapper<{}>;
   ReactionCommentStateEnum: ReactionCommentStateEnum;
-  ReactionForComment: ResolverTypeWrapper<Omit<ReactionForComment, 'comment'> & { comment: ResolversTypes['Comment'] }>;
+  ReactionForComment: ResolverTypeWrapper<ReactionForComment>;
   ReactionForCommentClientResponse: ResolverTypeWrapper<ReactionForCommentClientResponse>;
-  ReactionForPost: ResolverTypeWrapper<Omit<ReactionForPost, 'post'> & { post: ResolversTypes['Post'] }>;
+  ReactionForPost: ResolverTypeWrapper<ReactionForPost>;
   ReactionForPostClientResponse: ResolverTypeWrapper<ReactionForPostClientResponse>;
   ReactionPostStateEnum: ReactionPostStateEnum;
   SignInUserResponse: ResolverTypeWrapper<SignInUserResponse>;
@@ -476,9 +472,9 @@ export type ResolversParentTypes = {
   Mutation: {};
   Post: PostModel;
   Query: {};
-  ReactionForComment: Omit<ReactionForComment, 'comment'> & { comment: ResolversParentTypes['Comment'] };
+  ReactionForComment: ReactionForComment;
   ReactionForCommentClientResponse: ReactionForCommentClientResponse;
-  ReactionForPost: Omit<ReactionForPost, 'post'> & { post: ResolversParentTypes['Post'] };
+  ReactionForPost: ReactionForPost;
   ReactionForPostClientResponse: ReactionForPostClientResponse;
   SignInUserResponse: SignInUserResponse;
   String: Scalars['String']['output'];
@@ -623,11 +619,9 @@ export type QueryResolvers<ContextType = DataSourceContext, ParentType extends R
 };
 
 export type ReactionForCommentResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['ReactionForComment'] = ResolversParentTypes['ReactionForComment']> = {
-  comment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType>;
   commentId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  reactionName?: Resolver<ResolversTypes['ReactionCommentStateEnum'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  reactionName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -642,10 +636,8 @@ export type ReactionForCommentClientResponseResolvers<ContextType = DataSourceCo
 
 export type ReactionForPostResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['ReactionForPost'] = ResolversParentTypes['ReactionForPost']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  reactionName?: Resolver<ResolversTypes['ReactionPostStateEnum'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  reactionName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
