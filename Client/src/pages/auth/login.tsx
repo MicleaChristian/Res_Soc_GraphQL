@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { SignInUserResponse } from "src/gql/graphql";
 
 const LoginPage: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        try {
-            const response = await fetch('http://localhost:4000', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    query: `
+    try {
+      const response = await fetch("http://localhost:4000", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: `
                         mutation SignIn($email: String!, $password: String!) {
                             signIn(email: $email, password: $password) {
                                 code
@@ -26,55 +26,55 @@ const LoginPage: React.FC = () => {
                             }
                         }
                     `,
-                    variables: { email, password },
-                }),
-            });
+          variables: { email, password },
+        }),
+      });
 
-            const result = await response.json();
-            const data = result.data.signIn;
+      const result: SignInUserResponse = await response.json();
+      const { success, token, message } = result;
 
-            if (data.success) {
-                localStorage.setItem('token', data.token); // Store JWT
-                navigate('/'); // Redirect on success
-            } else {
-                setError(data.message || 'Login failed');
-            }
-        } catch (err) {
-            setError('An error occurred during login');
-        }
-    };
+      if (success) {
+        token && localStorage.setItem("token", token); // Store JWT
+        navigate("/"); // Redirect on success
+      } else {
+        setError(message || "Login failed");
+      }
+    } catch (err) {
+      setError("An error occurred during login");
+    }
+  };
 
-    return (
-        <div className="page-container flex flex-col justify-center items-center">
-            <div className="logo">
-                <Link to="/">
-                    <img className="w-50" src="/assets/logo-raven.png" alt="Logo" />
-                </Link>
-            </div>
-            <div className="card">
-                <h1 className="card-title">Login</h1>
-                {error && <p className="error-message">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Login</button>
-                </form>
-                <a href="/register">No account? Register here</a>
-            </div>
-        </div>
-    );
+  return (
+    <div className="page-container flex flex-col justify-center items-center">
+      <div className="logo">
+        <Link to="/">
+          <img className="w-50" src="/assets/logo-raven.png" alt="Logo" />
+        </Link>
+      </div>
+      <div className="card">
+        <h1 className="card-title">Login</h1>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <a href="/register">No account? Register here</a>
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;

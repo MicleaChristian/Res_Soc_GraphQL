@@ -2,11 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
-  const bool = false;
+
+  const isLoggedIn = false
   return (
     <aside className="w-64 bg-white p-6 shadow-md flex flex-col justify-between">
       <div>
-        {bool ? (
+        {isLoggedIn ? (
           <div className="flex shadow-md w-full rounded-2xl p-4 items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-full bg-gray-300">
               <img
