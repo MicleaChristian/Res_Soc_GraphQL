@@ -1,41 +1,44 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SignInUserResponse } from "src/gql/graphql";
+import { useAuth } from "@components/auth/AuthContext"; // Import AuthContext
 
 const LoginPage: React.FC = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000", {
+      const response = await fetch("http://localhost:4000/graphql", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: `
-                        mutation SignIn($email: String!, $password: String!) {
-                            signIn(email: $email, password: $password) {
-                                code
-                                message
-                                success
-                                token
-                            }
-                        }
-                    `,
+            mutation SignIn($email: String!, $password: String!) {
+              signIn(email: $email, password: $password) {
+                code
+                message
+                success
+                token
+              }
+            }
+          `,
           variables: { email, password },
         }),
       });
 
-      const result: SignInUserResponse = await response.json();
-      const { success, token, message } = result;
+      const result = await response.json();
+      if (!result.data || !result.data.signIn) {
+        setError("Unexpected response from server");
+        return;
+      }
+
+      const { success, message, token } = result.data.signIn;
 
       if (success) {
-        token && localStorage.setItem("token", token); // Store JWT
-        navigate("/"); // Redirect on success
+        login(token);
       } else {
         setError(message || "Login failed");
       }
@@ -46,11 +49,6 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="page-container flex flex-col justify-center items-center">
-      <div className="logo">
-        <Link to="/">
-          <img className="w-50" src="/assets/logo-raven.png" alt="Logo" />
-        </Link>
-      </div>
       <div className="card">
         <h1 className="card-title">Login</h1>
         {error && <p className="error-message">{error}</p>}
@@ -71,7 +69,6 @@ const LoginPage: React.FC = () => {
           />
           <button type="submit">Login</button>
         </form>
-        <a href="/register">No account? Register here</a>
       </div>
     </div>
   );

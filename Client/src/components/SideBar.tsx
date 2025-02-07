@@ -1,13 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@components/auth/AuthContext"; // Import AuthContext
+import { jwtDecode } from "jwt-decode"; // To decode JWT token
+
+interface DecodedToken {
+  email: string;
+}
 
 const Sidebar: React.FC = () => {
+  const { token, logout } = useAuth(); // Get token & logout function from AuthContext
+  let userEmail = null;
 
-  const isLoggedIn = false
+  if (token) {
+    try {
+      const decoded: DecodedToken = jwtDecode(token);
+      userEmail = decoded.email; // Extract email from JWT
+    } catch (error) {
+      console.error("Invalid token", error);
+    }
+  }
+
   return (
     <aside className="w-64 bg-white p-6 shadow-md flex flex-col justify-between">
       <div>
-        {isLoggedIn ? (
+        {token ? ( // If user is logged in, show email
           <div className="flex shadow-md w-full rounded-2xl p-4 items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-full bg-gray-300">
               <img
@@ -17,15 +33,14 @@ const Sidebar: React.FC = () => {
               />
             </div>
             <div>
-              <h3 className="text-lg text-black font-semibold">Prince</h3>
-              <p className="text-gray-500">@prince</p>
+              <p className="text-gray-500">@{userEmail?.split("@")[0]}</p>
             </div>
           </div>
         ) : (
           <div className="flex gap-4">
             <Link
               to="/login"
-              className=" shadow-md rounded-2xl p-4 items-center gap-4 mb-8"
+              className="shadow-md rounded-2xl p-4 items-center gap-4 mb-8"
             >
               <div className="w-12 h-12 rounded-full bg-gray-300">
                 <img
@@ -59,6 +74,20 @@ const Sidebar: React.FC = () => {
           <a href="#settings" className="block !text-gray-500">
             Settings
           </a>
+
+          {/* 🔴 Logout Button Styled Like Other Sidebar Links */}
+          {token && (
+            <a
+              href="#logout"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent page refresh
+                logout(); // Call logout function
+              }}
+              className="block !text-gray-500 hover:!text-red-500 transition"
+            >
+              Logout
+            </a>
+          )}
         </nav>
       </div>
       <div className="mt-8 bg-gray-100 p-4 rounded-lg">
