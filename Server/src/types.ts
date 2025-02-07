@@ -126,17 +126,20 @@ export type MutationCreateCommentArgs = {
   content: Scalars['String']['input'];
   postId: Scalars['ID']['input'];
   title: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 
 export type MutationCreateImageForCommentArgs = {
   commentId: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
 
 export type MutationCreateImageForPostArgs = {
   postId: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -145,6 +148,7 @@ export type MutationCreatePostArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   title: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 
@@ -558,10 +562,10 @@ export type ImageResolvers<ContextType = DataSourceContext, ParentType extends R
 };
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'authorId' | 'content' | 'postId' | 'title'>>;
-  createImageForComment?: Resolver<Maybe<ResolversTypes['CreateImageForCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateImageForCommentArgs, 'commentId' | 'url'>>;
-  createImageForPost?: Resolver<Maybe<ResolversTypes['CreateImageForPostResponse']>, ParentType, ContextType, RequireFields<MutationCreateImageForPostArgs, 'postId' | 'url'>>;
-  createPost?: Resolver<Maybe<ResolversTypes['CreatePostResponse']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'authorId' | 'content' | 'title'>>;
+  createComment?: Resolver<Maybe<ResolversTypes['CreateCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'authorId' | 'content' | 'postId' | 'title' | 'token'>>;
+  createImageForComment?: Resolver<Maybe<ResolversTypes['CreateImageForCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateImageForCommentArgs, 'commentId' | 'token' | 'url'>>;
+  createImageForPost?: Resolver<Maybe<ResolversTypes['CreateImageForPostResponse']>, ParentType, ContextType, RequireFields<MutationCreateImageForPostArgs, 'postId' | 'token' | 'url'>>;
+  createPost?: Resolver<Maybe<ResolversTypes['CreatePostResponse']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'authorId' | 'content' | 'title' | 'token'>>;
   createReactionForComment?: Resolver<Maybe<ResolversTypes['CreateReactionForCommentResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForCommentArgs, 'commentId' | 'reactionName' | 'userId'>>;
   createReactionForPost?: Resolver<Maybe<ResolversTypes['CreateReactionForPostResponse']>, ParentType, ContextType, RequireFields<MutationCreateReactionForPostArgs, 'postId' | 'reactionName' | 'userId'>>;
   createUser?: Resolver<Maybe<ResolversTypes['CreateUserResponse']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password'>>;

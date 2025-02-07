@@ -16,6 +16,10 @@ export const signIn: MutationResolvers['signIn'] = async (_, {email, password}, 
       code: 200,
       message: 'User is signed in',
       success: true,
+      user: {
+        id: user.id,
+        email: user.email
+      },
       token,
     }
   } catch {

@@ -20,12 +20,12 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String!, password: String!): CreateUserResponse
     signIn(email: String!, password: String!): SignInUserResponse
-    createPost(title: String!, content: String!, authorId: ID!) : CreatePostResponse
-    createComment(title: String!, content: String!, authorId: ID!, postId: ID!) : CreateCommentResponse
+    createPost(title: String!, content: String!, authorId: ID!,token: String!) : CreatePostResponse
+    createComment(title: String!, content: String!, authorId: ID!, postId: ID!,token: String!) : CreateCommentResponse
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
     createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
-    createImageForPost(url: String!, postId: ID!) : CreateImageForPostResponse
-    createImageForComment(url: String!, commentId: ID!) : CreateImageForCommentResponse
+    createImageForPost(url: String!, postId: ID!,token: String!) : CreateImageForPostResponse
+    createImageForComment(url: String!, commentId: ID!,token: String!) : CreateImageForCommentResponse
   }
 
   type GetUserReactionForAllCommentsInAPostResponse {

@@ -1,8 +1,19 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { MutationResolvers } from "../../../types.js";
+import {getUser} from '../../../modules/auth.js'
 
-export const createImageForComment: MutationResolvers['createImageForComment'] = async (_, {url, commentId}, context) => {
+
+export const createImageForComment: MutationResolvers['createImageForComment'] = async (_, {url, commentId, token}, context) => {
     try {
+        const authenticatedUser = getUser(token);
+            if(!authenticatedUser){
+                return {
+                code: 401,
+                message: "User not signed in",
+                success:false,
+                image: null
+            }
+        }
       const createdImage = await context.dataSources.db.image.create({
         data: {
           url,
