@@ -85,9 +85,14 @@ const LoginPage: React.FC = () => {
         >
           No Account? Register Here
         </a>
+        <br />
+        <a href="/reset" className="reset-password-link">
+          Forgot Password?
+        </a>
       </div>
     </div>
   );
 };
 
 export default LoginPage;
+
