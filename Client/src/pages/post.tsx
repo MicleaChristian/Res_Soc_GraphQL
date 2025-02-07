@@ -2,15 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useParams } from "react-router";
 
 const GET_POSTS = gql`
-  query GetCharacter($id: ID!) {
-    character(id: $id) {
-      id
-      name
-      image
-      status
-      type
-    }
-  }
+  query GetPosts {}
 `;
 
 const Posts = () => {
