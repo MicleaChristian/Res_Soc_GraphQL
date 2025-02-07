@@ -20,7 +20,7 @@ To initialize the Raven project, follow these steps:
    ```
 3. Run the development server:
    ```sh
-   npm run dev
+   npm run all
    ```
 
 ### 2. Start the Client
