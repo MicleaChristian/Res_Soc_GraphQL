@@ -18,7 +18,6 @@ import {createImageForComment} from "./mutations/images/imageComments/createImag
 import {getUserReactionByPost} from "./queries/reactions/getUserReactionByPost.js"
 import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserReactionByComment.js"
 
-
 export const resolvers: Resolvers = {
   Post: {
     comments,

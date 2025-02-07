@@ -49,7 +49,7 @@ const AddFeed = () => {
         <textarea
           placeholder="What's on your mind?"
           value={feed?.content}
-          onChange={(e) => setFeed(feed)}
+          onChange={() => setFeed(feed)}
         ></textarea>
         <button type="submit">Post</button>
       </form>

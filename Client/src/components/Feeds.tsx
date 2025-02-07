@@ -76,8 +76,8 @@ const Feeds: React.FC = () => {
           query: `
           query getPosts {
             getPosts {
-              message
               code
+              message
               success
               post {
                 content
@@ -95,7 +95,7 @@ const Feeds: React.FC = () => {
                 }
               }
             }
-          }
+        }
             
           `,
         }),
