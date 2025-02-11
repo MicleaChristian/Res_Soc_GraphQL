@@ -19,11 +19,13 @@ import {createImageForPost} from "./mutations/images/imagePosts/createImageForPo
 import {createImageForComment} from "./mutations/images/imageComments/createImageForComment.js";
 import {getUserReactionByPost} from "./queries/reactions/getUserReactionByPost.js"
 import {getUserReactionForAllCommentsInAPost} from "./queries/reactions/getUserReactionForAllCommentsInAPost.js"
+import {photo} from './queries/posts/subQuerries/imagePost.js'
 
 export const resolvers: Resolvers = {
   Post: {
     comments,
-    reactions:reactionPost
+    reactions:reactionPost,
+    photo
   },
   // find the post that 
   Comment: {

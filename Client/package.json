@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "codegenNpm": "graphql-codegen --watch",
     "codegen": "yarn graphql-codegen --build",
     "generate": "graphql-codegen",
     "launch": "yarn && npm install && yarn graphql-codegen --build && npm run codegen && yarn run dev",

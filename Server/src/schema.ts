@@ -20,8 +20,8 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String!, password: String!): CreateUserResponse
     signIn(email: String!, password: String!): SignInUserResponse
-    createPost(title: String!, content: String!, authorId: ID!,token: String!) : CreatePostResponse
-    createComment(title: String!, content: String!, authorId: ID!, postId: ID!,token: String!) : CreateCommentResponse
+    createPost(title: String!, content: String!, authorId: ID!,token: String!, photo: String) : CreatePostResponse
+    createComment(title: String!, content: String!, authorId: ID!, postId: ID!,token: String!, published: Boolean!) : CreateCommentResponse
     deleteComment(id: ID!, token: String!) : DeleteCommentResponse
     createReactionForPost(reactionName: ReactionPostStateEnum!, userId: ID!, postId: ID!) : CreateReactionForPostResponse
     createReactionForComment(reactionName: ReactionPostStateEnum!, userId: ID!, commentId: ID!) : CreateReactionForCommentResponse
@@ -162,7 +162,7 @@ type Post {
   content: String!
   published: Boolean!
   publishedAt: String!
-  photo: String
+  photo: [Image]
   comments: [Comment]
   reactions: [ReactionForPost]
 }
@@ -172,6 +172,7 @@ type Post {
     title: String!
     content: String!
     published: Boolean!
+    publishedAt: String
     authorId: String!
     author: User!
     postId: String!

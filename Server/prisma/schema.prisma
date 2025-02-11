@@ -26,7 +26,7 @@ model Post {
   id          String    @id @unique @default(uuid())
   title       String
   content     String
-  published   Boolean   @default(false)
+  published   Boolean   @default(true)
   author      User      @relation("userPostRelation",fields: [authorId], references: [id])
   authorId    String
   photo       Image[] @relation("postImageRelation")
@@ -39,7 +39,7 @@ model Comment {
   id          String   @id @unique @default(uuid())
   title       String
   content     String
-  published   Boolean  @default(false)
+  published   Boolean  @default(true)
   author      User     @relation("userCommentRelation",fields: [authorId], references: [id])
   authorId    String
   postId      String

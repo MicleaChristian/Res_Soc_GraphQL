@@ -1,4 +1,4 @@
-import React from 'react';
+import {StrictMode} from 'react';
 import { createRoot } from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { BrowserRouter, Route, Routes } from "react-router";
@@ -16,6 +16,7 @@ const client = new ApolloClient({
 });
 
 createRoot(document.getElementById('root')!).render(
+<<<<<<< Updated upstream
     <React.StrictMode>
         <ApolloProvider client={client}>
             <BrowserRouter>
@@ -34,3 +35,23 @@ createRoot(document.getElementById('root')!).render(
         </ApolloProvider>
     </React.StrictMode>
 );
+=======
+    <StrictMode>
+        <BrowserRouter>
+            <ApolloProvider client={client}>
+                    <AuthProvider>
+                        <Routes>
+                            <Route path="/" element={<App />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/reset" element={<ResetPassPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/profil" element={<Profil />} />
+                            <Route path="/:id" element={<Posts />} />
+                        </Routes>
+                    </AuthProvider>
+            </ApolloProvider>
+        </BrowserRouter>
+    </StrictMode>,
+)
+  
+>>>>>>> Stashed changes

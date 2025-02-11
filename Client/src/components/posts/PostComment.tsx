@@ -1,82 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Comment } from "src/types";
+import { Comment } from "src/gql/graphql";
+import { graphql } from '../../gql'
+import { useMutation } from '@apollo/client'
 
-const fetchComments = async (postId: string) => {
-  try {
-    const response = await fetch("http://localhost:4000/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `
-          query {
-            getComments(postId: "${postId}") {
-              id
-              title
-              content
-              published
+const addComment = graphql(`
+      mutation createComment($title: String!, $content: String!, $authorId: ID!, $postId: ID!,$token: String!, $published: Boolean!) {
+        createComment(title:$title , content: $content, authorId : $authorId, postId : $postId, token: $token , published: $published){
+            code
+            success
+            message
+            comment {
               authorId
+              content
+              id
+              published
               postId
-              publishedAt
             }
           }
-        `,
-      }),
-    });
+        }
+    `)
 
-    const data = await response.json();
-    return data.data.getComments || [];
-  } catch (error) {
-    console.error("Error fetching comments:", error);
-    return [];
-  }
-};
-
-const addComment = async (comment: Omit<Comment, "id" | "publishedAt">) => {
-  try {
-    const response = await fetch("http://localhost:4000/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        query: `
-          mutation {
-            createComment(
-              title: "${comment.title}",
-              content: "${comment.content}",
-              authorId: "${comment.authorId}",
-              postId: "${comment.postId}"
-            ) {
-              code
-              success
-              message
-              comment {
-                id
-                title
-                content
-                published
-                authorId
-                postId
-                publishedAt
-              }
-            }
-          }
-        `,
-      }),
-    });
-
-    const data = await response.json();
-    return data.data?.createComment?.comment || null;
-  } catch (error) {
-    console.error("Error adding comment:", error);
-    return null;
-  }
-};
-
-const ShowList = ({ comments }: { comments: Comment[] }) => {
+const ShowList = ({ comments }: { comments: Comment[]}) => {
+  console.log("comment in showlist", comments);
   return (
     <div>
       {comments.length > 0 ? (
@@ -93,43 +38,63 @@ const ShowList = ({ comments }: { comments: Comment[] }) => {
   );
 };
 
-export default function PostComment({ postId }: { postId: string }) {
+export default function PostComment({ postId, commentsPost }: { postId: string, commentsPost: Comment[]}) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
 
+  const [addCommentToPost, { data, loading, error }] = useMutation(addComment);
+
+  console.log(data);
+  if (loading) return 'Submitting...';
+
+  if (error) return `Submission error! ${error.message}`;
+
   useEffect(() => {
     const loadComments = async () => {
-      const fetchedComments = await fetchComments(postId);
-      setComments(fetchedComments);
+      setComments(commentsPost);
+      console.log("loadComment",comments );
     };
 
     console.log("PostComment -> postId", postId);
-
+    
     loadComments();
+    console.log("comments ->", comments);
   }, [postId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log(e);
     if (!title.trim() || !content.trim()) {
       alert("Title and content cannot be empty.");
       return;
     }
+    // addCommentToPost({ variables: { 
+    //   type: input.value,
+        // title:$title , 
+        // content: $content, 
+        // authorId : $authorId, 
+        // postId : $postId, 
+        // token: $token , 
+        // published: $published
 
-    const newComment = await addComment({
-      title,
-      content,
-      authorId: "1",
-      postId,
-      published: false,
-    });
+    // }});
 
-    if (newComment) {
-      setComments((prev) => [...prev, newComment]);
-      setTitle("");
-      setContent("");
-    }
+    // input.value = '';
+
+    // const newComment = await addComment({
+    //   title,
+    //   content,
+    //   authorId: "1",
+    //   postId,
+    //   published: false,
+    // });
+
+    // if (newComment) {
+    //   setComments((prev) => [...prev, newComment]);
+    //   setTitle("");
+    //   setContent("");
+    // }
   };
 
   return (

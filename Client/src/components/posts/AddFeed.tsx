@@ -4,45 +4,8 @@ import { Post } from "src/types";
 const AddFeed = () => {
   const [error, setError] = useState<string>("");
   const [feed, setFeed] = useState<Post>();
-  const [formData, setFormData] = useState({
-    lastname: "",
-    firstname: "",
-    zipcode: "",
-    NumberStreet: "",
-    address: "",
-    city: "",
-    country: "",
-    companyCode: "",
-    companylegalForm: "",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    CustomerOrBusiness: "",
-    addressComplement: "",
-    homeType: "",
-  });
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
+  // const token = localStorage.getItem.user.token;
   const handleSubmit = async (e: React.FormEvent) => {
-    // if (form.checkValidity() === false) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // } else {
-    //   try {
-    //     e.preventDefault();
-    //     await User.registerRequest(formData);
-    //     navigate("/login");
-    //   } catch (err) {
-    //     console.error("Erreur lors de l'inscription :", err);
-    //     alert("Erreur lors de l'inscription. Veuillez vérifier vos informations et réessayer.");
-    //   }
-    // }
-    // set_Validated(true);
     e.preventDefault();
     console.log(e);
     try {
@@ -58,7 +21,7 @@ const AddFeed = () => {
               }
             }
           `,
-          variables: { content: feed?.content },
+          variables: { title: feed?.title, content: feed?.content, published: feed?.published},
         }),
       });
 
@@ -83,7 +46,7 @@ const AddFeed = () => {
 
       {/* modal form add feed */}
       <form onSubmit={handleSubmit}>
-        <input type="text"/>
+        <input type="text" onChange={() => setFeed(feed)} value={feed?.title}/>
         <textarea
           placeholder="What's on your mind?"
           value={feed?.content}

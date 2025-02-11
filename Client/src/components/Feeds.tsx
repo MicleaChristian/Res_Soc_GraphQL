@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-
+import { graphql } from '../gql'
+import { useQuery } from '@apollo/client'
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import moment from "moment";
-import { Post } from "src/types";
 import AddFeed from "./posts/AddFeed";
 import PostComment from "./posts/PostComment";
+
 
 const pluralize = (count: number, noun: string, suffix = "s") =>
   capitalizeFirstLetter(`${noun}${count !== 1 ? suffix : ""}`);
@@ -26,32 +27,75 @@ const style = {
 };
 
 const Feeds: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [data, setData] = useState<Post[]>();
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(false);
+  // const [posts, setPosts] = useState([]);
   const [showLoadMore, setShowLoadMore] = useState(false);
-
+  const getFeed = graphql(`
+      query GetPosts {
+        getPosts {
+          code
+          message
+          post {
+            authorId
+            id
+            content
+            published
+            publishedAt
+            title
+            photo {
+              id
+              url
+            }
+            reactions {
+              id
+              reactionName
+            }
+            comments {
+              id
+              published
+              title
+              publishedAt
+              content
+            }
+          }
+        }
+      }
+    `)
+  
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  
+  const {data, error, loading} = useQuery(getFeed)
+  console.log(data);
+  
+  if(loading) return <div>loading</div>
+  
+  if (error || !data) return <div>error</div>
+  let comments = data.getPosts?.post[0]?.comments || null;
 
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  console.log(data.getPosts?.post[0].comments)
+  // const onLoadMore = () => {
+  //   refetch({page: data.getPosts?.info?.next})
+  // }
 
-  const calculateScrollPage = () => {
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setShowLoadMore(true);
-    } else {
-      setShowLoadMore(false);
-    }
-  };
+  // const calculateScrollPage = () => {
+  //   if (scrollTop + clientHeight >= scrollHeight) {
+  //     setShowLoadMore(true);
+  //   } else {
+  //     setShowLoadMore(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", calculateScrollPage);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", calculateScrollPage);
 
-    return () => {
-      window.removeEventListener("scroll", calculateScrollPage);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("scroll", calculateScrollPage);
+  //   };
+  // }, []);
 
   const timeAgo = (date: string) => {
     if (!date) return;
@@ -64,83 +108,6 @@ const Feeds: React.FC = () => {
     return moment(finalDate).fromNow();
   };
 
-  const getPosts = async () => {
-    try {
-      // fetch posts
-      const posts = await fetch("http://localhost:4000/graphql", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
-          query getPosts {
-            getPosts {
-              code
-              message
-              success
-              post {
-                content
-                id
-                title
-                photo
-                authorId
-                published
-                publishedAt
-                comments {
-                  id
-                  content
-                  published
-                  authorId
-                }
-              }
-            }
-        }
-            
-          `,
-        }),
-      });
-
-      if (!posts.ok) {
-        setError(true);
-        setLoading(false);
-      }
-
-      const {
-        data: {
-          getPosts: { post },
-        },
-      } = await posts.json();
-
-      setData(post);
-
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  if (loading)
-    return (
-      <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
-        Loading...
-      </div>
-    );
-
-  if (error || !data)
-    return (
-      <div className="text-black-500 text-center shadow-lg p-4 bg-white rounded-lg">
-        No posts found
-      </div>
-    );
-
   return (
     <section>
       <div className="mb-8 flex items-center justify-between">
@@ -152,32 +119,32 @@ const Feeds: React.FC = () => {
           Create Post
         </button>
       </div>
-      {data.length ? (
-        data.map((post) => (
-          <div className="mb-8" key={post.id}>
+      {data.getPosts?.post?.length ? (
+        data.getPosts?.post?.map((post) => (
+          <div className="mb-8" key={post?.id}>
             <div className="bg-white rounded-lg shadow p-5 mb-4">
               <div className="flex items-start gap-4 text-black">
                 <img
-                  src={post.photo || "https://placehold.co/400x400"}
+                  src={post?.photo[0]?.url ||"https://placehold.co/400x400"}
                   alt="Post 1"
                   className="w-12 h-12 rounded-full"
                 />
                 <div>
-                  <h4 className="text-lg font-semibold">{post.title}</h4>
+                  <h4 className="text-lg font-semibold">{post?.title}</h4>
                   <p className="text-gray-500 text-sm">
-                    {timeAgo(post.publishedAt)}
+                    {timeAgo(post?.publishedAt || "01/01/2025")}
                   </p>
                   <p className="mt-2 ">
                     {post.content.length > 200
-                      ? `${post.content.slice(0, 200)}...`
-                      : post.content}
+                      ? `${post?.content.slice(0, 200)}...`
+                      : post?.content}
                   </p>
                   {/*  carousel image with dots */}
                   <div className="mt-4 relative">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 justify-content-center">
                       <div className="mt-4 flex gap-2">
                         <img
-                          src={post.photo || "https://placehold.co/700x400"}
+                          src={post?.photo[0]?.url ||"https://placehold.co/700x400"}
                           alt="Post 1"
                           className="w-full h-[200] rounded-md"
                         />
@@ -203,7 +170,7 @@ const Feeds: React.FC = () => {
               </div>
               {/* comments sections expanded */}
               <div className="mt-4">
-                {post.comments.length && <PostComment postId={post.id} />}
+                {post.comments.length && <PostComment postId={post.id} commentsPost={comments}/>}
               </div>
             </div>
           </div>
