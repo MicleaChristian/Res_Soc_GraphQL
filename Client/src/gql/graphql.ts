@@ -25,6 +25,7 @@ export type Comment = {
   post: Post;
   postId: Scalars['String']['output'];
   published: Scalars['Boolean']['output'];
+  publishedAt: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
 };
 
@@ -84,6 +85,14 @@ export type CreateUserResponse = {
   user: Maybe<UserClientObject>;
 };
 
+export type DeleteCommentResponse = {
+  __typename?: 'DeleteCommentResponse';
+  code: Scalars['Int']['output'];
+  comment: Maybe<Comment>;
+  message: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type GetUserReactionForAllCommentsInAPostResponse = {
   __typename?: 'GetUserReactionForAllCommentsInAPostResponse';
   code: Scalars['Int']['output'];
@@ -113,6 +122,7 @@ export type Mutation = {
   createReactionForComment: Maybe<CreateReactionForCommentResponse>;
   createReactionForPost: Maybe<CreateReactionForPostResponse>;
   createUser: Maybe<CreateUserResponse>;
+  deleteComment: Maybe<DeleteCommentResponse>;
   signIn: Maybe<SignInUserResponse>;
 };
 
@@ -121,6 +131,7 @@ export type MutationCreateCommentArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
   postId: Scalars['ID']['input'];
+  published: Scalars['Boolean']['input'];
   title: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
@@ -143,6 +154,7 @@ export type MutationCreateImageForPostArgs = {
 export type MutationCreatePostArgs = {
   authorId: Scalars['ID']['input'];
   content: Scalars['String']['input'];
+  photo: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
   token: Scalars['String']['input'];
 };
@@ -168,6 +180,12 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
+};
+
+
 export type MutationSignInArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -179,7 +197,7 @@ export type Post = {
   comments: Maybe<Array<Maybe<Comment>>>;
   content: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  photo: Maybe<Scalars['String']['output']>;
+  photo: Maybe<Array<Maybe<Image>>>;
   published: Scalars['Boolean']['output'];
   publishedAt: Scalars['String']['output'];
   reactions: Maybe<Array<Maybe<ReactionForPost>>>;
