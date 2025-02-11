@@ -16,26 +16,6 @@ const client = new ApolloClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-<<<<<<< Updated upstream
-    <React.StrictMode>
-        <ApolloProvider client={client}>
-            <BrowserRouter>
-                <AuthProvider>
-                    <Routes>
-                        <Route path="/" element={<App />} />
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/reset" element={<ResetPassPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/profil" element={<Profil />} />
-                        <Route path="/:id" element={<Posts />} />
-                        <Route path="*" element={<App />} />
-                    </Routes>
-                </AuthProvider>
-            </BrowserRouter>
-        </ApolloProvider>
-    </React.StrictMode>
-);
-=======
     <StrictMode>
         <BrowserRouter>
             <ApolloProvider client={client}>
@@ -54,4 +34,3 @@ createRoot(document.getElementById('root')!).render(
     </StrictMode>,
 )
   
->>>>>>> Stashed changes

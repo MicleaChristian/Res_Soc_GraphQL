@@ -124,6 +124,7 @@ export type Mutation = {
   createReactionForPost: Maybe<CreateReactionForPostResponse>;
   createUser: Maybe<CreateUserResponse>;
   deleteComment: Maybe<DeleteCommentResponse>;
+  deleteReactionByPost: Maybe<DeleteCommentResponse>;
   signIn: Maybe<SignInUserResponse>;
 };
 
@@ -182,6 +183,12 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+  token: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteReactionByPostArgs = {
   id: Scalars['ID']['input'];
   token: Scalars['String']['input'];
 };
